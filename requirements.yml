@@ -1,0 +1,8 @@
+# Install postgresql from galaxy
+- src: geerlingguy.postgresql
+
+# Install redis from galaxy
+- src: geerlingguy.redis
+
+# Install docker from galaxy
+- src: geerlingguy.docker
