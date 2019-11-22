@@ -1,0 +1,17 @@
+[postgresql]
+host1.example.com
+
+[redis]
+host1.example.com
+
+[nfs]
+host1.examle.com
+
+[quay]
+host1.example.com
+
+[quay-systems:children]
+postgresql
+redis
+nfs
+quay

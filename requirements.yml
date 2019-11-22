@@ -6,3 +6,6 @@
 
 # Install docker from galaxy
 - src: geerlingguy.docker
+
+# Install nfs from galaxy
+- src: geerlingguy.nfs
