@@ -72,6 +72,10 @@
  #   tags:
  #     - deploy-mysql-container
 
+# mkdir -p /var/lib/mysql
+# chmod 777 /var/lib/mysql
+
+
   - name: Install python-docker-py on target
     yum:
       name: python-docker-py
@@ -91,6 +95,8 @@
       image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
     tags:
       - deploy-mysql-container
+
+# telnet test of mysql 
 
   handlers:
 
