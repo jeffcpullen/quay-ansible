@@ -1,14 +1,14 @@
 [postgresql]
-host1.example.com
+quay.homelab.work
 
 [redis]
-host1.example.com
+quay.homelab.work
 
 [nfs]
 host1.examle.com
 
 [quay]
-host1.example.com
+quay.homelab.work
 
 [quay-systems:children]
 postgresql

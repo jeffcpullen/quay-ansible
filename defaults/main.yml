@@ -1,2 +1,18 @@
 ---
 # defaults file for quay-ansible
+
+# NFS based defaults
+#nfs_rpcbind_state: started
+#nfs_rpcbind_enabled: true
+
+# Docker defaults
+#docker_service_state: started
+#docker_service_enabled: true
+#docker_restart_handler_state: restarted
+#docker_package: "docker"
+#docker_package_state: present
+
+# Redis defaults
+#redis_port: 6379
+#redis_bind_interface: 127.0.0.1
+

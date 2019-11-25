@@ -1,0 +1,2 @@
+# Needs epel for redis
+redis_enablerepo: epel
