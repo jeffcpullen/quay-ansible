@@ -1,6 +1,11 @@
 ---
 # tasks file for register-system
 
+- name: Install satellite katello rpm 
+  yum:
+    name: http://sat6.homelab.work/pub/katello-ca-consumer-latest.noarch.rpm
+    state: present 
+
 - name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
   redhat_subscription:
     state: present
