@@ -48,6 +48,12 @@
     tags:
       - firewalld
 
+  - name: Create env file on target
+    template:
+      src: mysql-env-file
+      dest: ~/mysql-env-file
+      state: present
+
   - name: Total garbage method of deploying mysql container
     command: "docker run \
     --detach \
