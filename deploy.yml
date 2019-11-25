@@ -52,7 +52,6 @@
     template:
       src: mysql-env-file
       dest: ~/mysql-env-file
-      state: present
     tags:
       - deploy-mysql-container
       - deploy-mysql-env-file
