@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+
+  - name: Register system to satellite and repos
+    include_role:
+      name: register-system
