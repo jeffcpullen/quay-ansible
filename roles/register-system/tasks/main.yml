@@ -11,6 +11,8 @@
     state: present
     activationkey: rhel-7-server-minimal
     org_id: homelab_infra
+    server_hostname: sat6.homelab.work
+    
 
 - name: Enable all repositories starting with rhel-7-server
   rhsm_repository:
