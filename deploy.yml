@@ -35,12 +35,13 @@
 
   - name: Enable firewalld ports for postgresql 
     firewalld:
-      port: 
-      - 8443/tcp
-      - 80/tcp
-      - 443/tcp
+      port: "{{ item }}"
       permanent: yes
       state: enabled
       zone: public
+      with_items:
+        - 8443/tcp
+        - 80/tcp
+        - 443/tcp
     tags:
       - firewalld
