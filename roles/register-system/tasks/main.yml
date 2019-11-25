@@ -6,12 +6,12 @@
     name: http://sat6.homelab.work/pub/katello-ca-consumer-latest.noarch.rpm
     state: present 
 
-- name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
-  redhat_subscription:
-    state: present
-    activationkey: rhel-7-server-minimal
-    org_id: homelab_infra
-    server_hostname: sat6.homelab.work
+#- name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
+#  redhat_subscription:
+#    state: present
+#    activationkey: rhel-7-server-minimal
+#    org_id: homelab_infra
+#    server_hostname: sat6.homelab.work
     
 
 - name: Enable all repositories starting with rhel-7-server
