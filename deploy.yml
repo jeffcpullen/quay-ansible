@@ -53,6 +53,9 @@
       src: mysql-env-file
       dest: ~/mysql-env-file
       state: present
+    tags:
+      - deploy-mysql-container
+      - deploy-mysql-env-file
 
   - name: Total garbage method of deploying mysql container
     command: "docker run \
