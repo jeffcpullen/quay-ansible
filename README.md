@@ -10,7 +10,7 @@ Before running you need to pull down the roles that this playbook depends on. Yo
 
  `ansible-galaxy install --roles-path ./roles/ -r requirements.yml`
 
- Requires Ansible 2.8+
+ Requires Ansible 2.7+
 
 Role Variables
 --------------
