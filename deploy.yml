@@ -24,3 +24,11 @@
       state: latest
     tags:
       - install-docker
+
+  - name: Start and enable docker 
+    systemd:
+      name: docker 
+      state: started
+      enabled: yes
+    tags:
+      - start-docker
