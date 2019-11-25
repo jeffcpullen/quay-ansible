@@ -17,3 +17,10 @@
       state: latest
     tags:
       - install-postgres
+
+  - name: Install Docker
+    yum:
+      name: docker 
+      state: latest
+    tags:
+      - install-docker
