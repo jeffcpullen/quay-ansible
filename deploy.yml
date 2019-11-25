@@ -56,19 +56,32 @@
       - deploy-mysql-container
       - deploy-mysql-env-file
 
+ # - name: Total garbage method of deploying mysql container
+ #   command: "docker run \
+ #   --detach \
+ #   --restart=always \
+ #   --env MYSQL_ROOT_PASSWORD={{ MYSQL_ROOT_PASSWORD }} \
+ #   --env MYSQL_USER={{ MYSQL_USER }} \
+ #   --env MYSQL_PASSWORD={{ MYSQL_PASSWORD }} \
+ #   --env MYSQL_DATABASE={{ MYSQL_DATABASE }} \
+ #   --name {{ MYSQL_CONTAINER_NAME }} \
+ #   --privileged=true \
+ #   --publish 3306:3306 \
+ #   -v /var/lib/mysql:/var/lib/mysql/data:Z \
+ #   registry.access.redhat.com/rhscl/mysql-57-rhel7"
+ #   tags:
+ #     - deploy-mysql-container
+
   - name: Total garbage method of deploying mysql container
-    command: "docker run \
-    --detach \
-    --restart=always \
-    --env MYSQL_ROOT_PASSWORD={{ MYSQL_ROOT_PASSWORD }} \
-    --env MYSQL_USER={{ MYSQL_USER }} \
-    --env MYSQL_PASSWORD={{ MYSQL_PASSWORD }} \
-    --env MYSQL_DATABASE={{ MYSQL_DATABASE }} \
-    --name {{ MYSQL_CONTAINER_NAME }} \
-    --privileged=true \
-    --publish 3306:3306 \
-    -v /var/lib/mysql:/var/lib/mysql/data:Z \
-    registry.access.redhat.com/rhscl/mysql-57-rhel7"
+    docker_container:
+      env_file: "~/mysql-env-file"
+      detach: yes
+      restart: yes
+      name: "{{ MYSQL_CONTAINER_NAME }}"
+      privileged: yes
+      published_ports: 3306:3306
+      volumes: /var/lib/mysql:/var/lib/mysql/data:Z
+      image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
     tags:
       - deploy-mysql-container
 
