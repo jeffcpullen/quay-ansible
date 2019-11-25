@@ -43,5 +43,12 @@
       - 8443/tcp
       - 80/tcp
       - 443/tcp
+    notify:
+      - reload-firewall
     tags:
       - firewalld
+
+  handlers:
+
+  - name: reload-firewall
+    command: firewall-cmd --reload
