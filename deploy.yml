@@ -5,9 +5,13 @@
   - name: Register system to satellite and repos
     include_role:
       name: register-system
+    tags:
+      - register
 
 
   - name: Install postgresql 95
     name:
       - rh-postgresql95
       - rh-postgresql95-postgresql-contrib
+    tags:
+      - install-postgres
