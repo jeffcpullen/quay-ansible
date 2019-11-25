@@ -61,6 +61,8 @@
     --publish 3306:3306 \
     -v /var/lib/mysql:/var/lib/mysql/data:Z \
     registry.access.redhat.com/rhscl/mysql-57-rhel7"
+    tags:
+      - deploy-mysql-container
 
   handlers:
 
