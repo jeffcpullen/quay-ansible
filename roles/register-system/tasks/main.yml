@@ -18,7 +18,6 @@
   rhsm_repository:
     name: "{{ item }}"
     state: enabled
-    purge: True
   with_items:
       - rhel-7-server-rpms
       - rhel-7-server-extras-rpms
