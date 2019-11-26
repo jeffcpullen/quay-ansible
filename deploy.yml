@@ -196,6 +196,8 @@
       src: "{{ QUAY_CONFIG_TAR }}"
       dest: /mnt/quay/config/quay_config.tar
       copy: yes
+    tags:
+      - deploy-quay
 
   handlers:
 
