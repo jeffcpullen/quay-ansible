@@ -138,6 +138,12 @@
     tags:
       - deploy-redis-container
 
+  - name: Gather some quay host facts
+    setup:
+    register: quay-container-host
+    tags:
+      - deploy-quay-config
+      
   - name: Start quay in config mode
     docker_container:
       detach: yes
@@ -147,7 +153,6 @@
       published_ports: 8443:8443
       image: "quay.io/redhat/quay:v3.1.3"
       command: "config {{ QUAY_CONFIG_PASSWORD }}"
-    register: quay-container-host
     tags:
       - deploy-quay-config
 
