@@ -113,6 +113,9 @@
       - deploy-mysql-container
       - test-mysql-db
 
+##### mkdir /var/lib/redis
+
+
   handlers:
 
   - name: reload-firewall
