@@ -107,6 +107,7 @@
     mysql_db:
       name: "{{ MYSQL_DATABASE }}"
       state: present
+      login_host: 127.0.0.1
     tags:
       - deploy-mysql-container
       - test-mysql-db
