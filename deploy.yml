@@ -107,7 +107,7 @@
     mysql_db:
       name: "{{ MYSQL_DATABASE }}"
       state: present
-      login_host: 127.0.0.1
+      login_host: 192.168.2.163
       login_password: "{{ MYSQL_ROOT_PASSWORD }}"
       login_user: root
     tags:
