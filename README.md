@@ -12,6 +12,10 @@ Before running you need to pull down the roles that this playbook depends on. Yo
 
  Requires Ansible 2.7+
 
+ PLACEHOLDER FOR HOW TO RUN DEPLOY.YML
+
+ After running through the Quay config webui, copy the downloaded tarball to the ansible host and reference it with `-e QUAY_CONFIG_TAR=<path to tarball>`
+
 Role Variables
 --------------
 
