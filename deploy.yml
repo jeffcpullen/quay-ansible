@@ -133,6 +133,11 @@
     tags:
       - deploy-redis-container
 
+  - name: Test if Redis is up and talking
+    shell: printf "PING\r\n" | nc localhost 6379
+    tags:
+      - deploy-redis-container
+
   handlers:
 
   - name: reload-firewall
