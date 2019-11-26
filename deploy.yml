@@ -112,6 +112,7 @@
       login_user: root
     tags:
       - deploy-mysql-container
+      - test-mysql-db
 
 
   handlers:
