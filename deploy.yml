@@ -212,8 +212,7 @@
       restart: yes
       name: "quay"
       privileged: yes
-      sysctls:
-        - net.core.somaxconn=4096
+      sysctls: { net.core.somaxconn: 4096 }
       published_ports: 
         - "{{ QUAY_HTTP_PORT }}:8080"
         - "{{ QUAY_HTTPS_PORT }}:8443"
