@@ -114,6 +114,14 @@
       - test-mysql-db
 
 ##### mkdir /var/lib/redis
+  - name: Create /var/lib/redis
+    file:
+      path: /var/lib/redis
+      state: directory
+      mode: '0777'
+    tags:
+      - deploy-redis-container
+
 
 
   handlers:
