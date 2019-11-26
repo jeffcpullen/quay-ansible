@@ -151,7 +151,8 @@
       - deploy-quay-config
 
   - name: Debug the stored variable
-    debug: "{{ ansible_host }}"
+    debug:
+      vars: ansible_facts
     tags:
       - deploy-quay-config
 
