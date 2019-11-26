@@ -109,7 +109,7 @@
       state: present
       login_host: 127.0.0.1
       login_user: root
-      login_passowrd: "{{ MYSQL_ROOT_PASSWORD }}"
+      login_password: "{{ MYSQL_ROOT_PASSWORD }}"
     tags:
       - deploy-mysql-container
       - test-mysql-db
