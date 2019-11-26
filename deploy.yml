@@ -56,22 +56,6 @@
       - deploy-mysql-container
       - deploy-mysql-env-file
 
- # - name: Total garbage method of deploying mysql container
- #   command: "docker run \
- #   --detach \
- #   --restart=always \
- #   --env MYSQL_ROOT_PASSWORD={{ MYSQL_ROOT_PASSWORD }} \
- #   --env MYSQL_USER={{ MYSQL_USER }} \
- #   --env MYSQL_PASSWORD={{ MYSQL_PASSWORD }} \
- #   --env MYSQL_DATABASE={{ MYSQL_DATABASE }} \
- #   --name {{ MYSQL_CONTAINER_NAME }} \
- #   --privileged=true \
- #   --publish 3306:3306 \
- #   -v /var/lib/mysql:/var/lib/mysql/data:Z \
- #   registry.access.redhat.com/rhscl/mysql-57-rhel7"
- #   tags:
- #     - deploy-mysql-container
-
   - name: Create /var/lib/mysql
     file:
       path: /var/lib/mysql
