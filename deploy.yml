@@ -114,10 +114,6 @@
       - deploy-mysql-container
       - test-mysql-db
 
-      #login_user: root
-      #login_host: 192.168.2.163
-      #login_password: "{{ MYSQL_ROOT_PASSWORD }}"
-
   handlers:
 
   - name: reload-firewall
