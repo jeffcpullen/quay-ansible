@@ -74,8 +74,12 @@
 
 # mkdir -p /var/lib/mysql
 # chmod 777 /var/lib/mysql
-
-
+  - name: Create /var/lib/mysql
+    file:
+      path: /var/lib/mysql
+      state: directory
+      mode: '0777'
+    
   - name: Install python-docker-py on target
     yum:
       name: python-docker-py
