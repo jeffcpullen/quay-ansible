@@ -107,13 +107,13 @@
     mysql_db:
       name: "{{ MYSQL_DATABASE }}"
       state: present
-      login_host: 192.168.2.163
-      login_password: "{{ MYSQL_ROOT_PASSWORD }}"
-      login_user: root
     tags:
       - deploy-mysql-container
       - test-mysql-db
 
+      #login_user: root
+      #login_host: 192.168.2.163
+      #login_password: "{{ MYSQL_ROOT_PASSWORD }}"
 
   handlers:
 
