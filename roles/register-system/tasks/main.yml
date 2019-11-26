@@ -21,3 +21,4 @@
       - rhel-7-server-extras-rpms
       - rhel-server-rhscl-7-rpms
     state: enabled
+    purge: yes
