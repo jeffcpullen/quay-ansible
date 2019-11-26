@@ -194,7 +194,7 @@
   - name: Copy the tarball to the quay host
     unarchive:
       src: "{{ QUAY_CONFIG_TAR }}"
-      dest: /mnt/quay/config/quay_config.tar
+      dest: /mnt/quay/config/
       copy: yes
     tags:
       - deploy-quay
