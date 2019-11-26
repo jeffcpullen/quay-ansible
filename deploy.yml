@@ -152,7 +152,7 @@
 
   - name: Debug the stored variable
     debug:
-      vars: ansible_facts
+      var: inventory_hostname
     tags:
       - deploy-quay-config
 
