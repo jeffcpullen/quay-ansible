@@ -96,7 +96,8 @@
     tags:
       - deploy-mysql-container
 
-# telnet test of mysql 
+# telnet test of mysql planning on creating test db
+
 
   handlers:
 
