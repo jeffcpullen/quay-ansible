@@ -80,9 +80,11 @@
     tags:
       - deploy-mysql-container
     
-  - name: Install python-docker-py on target
+  - name: Install python-docker-py and mysql-python on target
     yum:
-      name: python-docker-py
+      name: 
+        - python-docker-py
+        - MySQL-python
       state: latest
     tags:
       - deploy-mysql-container
