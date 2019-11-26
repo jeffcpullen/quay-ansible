@@ -89,7 +89,7 @@
     tags:
       - deploy-mysql-container
 
-  - name: Total garbage method of deploying mysql container
+  - name: Deploy mysql container
     docker_container:
       env_file: "~/mysql-env-file"
       detach: yes
@@ -113,7 +113,6 @@
       - deploy-mysql-container
       - test-mysql-db
 
-##### mkdir /var/lib/redis
   - name: Create /var/lib/redis
     file:
       path: /var/lib/redis
@@ -122,7 +121,17 @@
     tags:
       - deploy-redis-container
 
-
+  - name: Deploy Redis container
+    docker_container:
+      detach: yes
+      restart: yes
+      name: "redis"
+      privileged: yes
+      published_ports: 6379:6379
+      volumes: /var/lib/redis:/var/lib/redis/data:Z
+      image: "registry.access.redhat.com/rhscl/redis-32-rhel7"
+    tags:
+      - deploy-redis-container
 
   handlers:
 
