@@ -163,9 +163,6 @@
     tags:
       - deploy-quay-config
 
-
-"ansible_fqdn"
-
   handlers:
 
   - name: reload-firewall
