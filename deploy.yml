@@ -223,6 +223,9 @@
     tags:
       - deploy-quay  
 
+### todo - deploy quay workers
+
+
   handlers:
 
   - name: reload-firewall
