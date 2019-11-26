@@ -103,7 +103,7 @@
       - deploy-mysql-container
 
 # telnet test of mysql planning on creating test db
-  - name: Create a new database with name 'bobdata'
+  - name: Ensure that the mysql container is running and quay db exists
     mysql_db:
       name: "{{ MYSQL_DATABASE }}"
       state: present
