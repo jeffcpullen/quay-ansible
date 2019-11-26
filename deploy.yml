@@ -101,6 +101,15 @@
       - deploy-mysql-container
 
 # telnet test of mysql planning on creating test db
+  - name: Create a new database with name 'bobdata'
+    mysql_db:
+      name: "{{ MYSQL_DATABASE }}"
+      state: present
+      login_host: localhost
+      login_password: "{{ MYSQL_ROOT_PASSWORD }}"
+      login_user: root
+    tags:
+      - deploy-mysql-container
 
 
   handlers:
