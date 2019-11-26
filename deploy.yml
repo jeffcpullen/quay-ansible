@@ -138,12 +138,6 @@
     tags:
       - deploy-redis-container
 
-  - name: Gather some quay host facts
-    setup:
-    register: quay-container-host
-    tags:
-      - deploy-quay-config
-      
   - name: Start quay in config mode
     docker_container:
       detach: yes
@@ -157,8 +151,7 @@
       - deploy-quay-config
 
   - name: Debug the stored variable
-    debug:
-      var: quay-container-host
+    debug: "{{ ansible_host }}"
     tags:
       - deploy-quay-config
 
