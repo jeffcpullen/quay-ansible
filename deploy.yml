@@ -223,7 +223,7 @@
         - /mnt/quay/storage:/datastorage:Z
       command: "config {{ QUAY_CONFIG_PASSWORD }}"
     tags:
-      - deploy-quay-config  
+      - deploy-quay  
 
   handlers:
 
