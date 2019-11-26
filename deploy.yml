@@ -171,6 +171,8 @@
   - name: "Final config settings"
     debug:
       msg: "At a minimum configure Server Hostname ({{ inventory_hostname }}) and Redis hostname ({{ inventory_hostname }}). Then click Save configuration changes and make sure that the configuration is validated. Download the configuration file and save it at <think of something here>"
+    tags:
+      - deploy-quay-config
 
   handlers:
 
