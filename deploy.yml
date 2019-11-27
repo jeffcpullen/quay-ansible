@@ -22,3 +22,17 @@
         - 111/tcp
     tags:
       - firewall-setup
+
+- hosts: mysql
+  - name: Deploy docker to mysql container host
+    include_tasks: tasks/docker-quay.yml
+    when: QUAY_MYSQL_CONTAINERIZE
+
+- hosts: redis
+  - name: Deploy docker to redis container host
+    include_tasks: tasks/docker-quay.yml
+    when: QUAY_REDIS_CONTAINERIZE
+
+- hosts: quay
+  - name: Deploy docker to quay container host
+    include_tasks: tasks/docker-quay.yml
