@@ -12,5 +12,3 @@
       - 443/tcp
     notify:
       - reload-firewall
-    tags:
-      - firewalld
