@@ -1,13 +1,13 @@
 ---
-  - name: Install Docker
+  - name: Install Docker and dependencies
     yum:
-      name: docker 
+      name: "{{ docker_packages }}" 
       state: latest
     tags:
       - install-docker
 
-  - name: Start and enable docker 
+  - name: Start and enable docker
     systemd:
-      name: docker 
+      name: docker
       state: started
       enabled: yes
