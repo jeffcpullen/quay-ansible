@@ -1,5 +1,10 @@
 ---
 - hosts: all
+
+  handlers:
+    - name: Include all handlers
+      include_tasks: handlers/main.yml
+
   tasks:
 
   - name: Register system to satellite and repos
