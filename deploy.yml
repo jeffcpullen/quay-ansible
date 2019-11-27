@@ -84,7 +84,7 @@
 
   - name: Deploy quay config container
     include_tasks: tasks/quay-config-mode.yml
-    when: QUAY_CONFIG
+    when: QUAY_CONFIG is defined and QUAY_CONFIG
 
   - name: Deploy quay container
     include_tasks: tasks/deploy-quay.yml
