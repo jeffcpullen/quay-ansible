@@ -24,15 +24,21 @@
       - firewall-setup
 
 - hosts: mysql
+  tasks:
+
   - name: Deploy docker to mysql container host
     include_tasks: tasks/docker-quay.yml
     when: QUAY_MYSQL_CONTAINERIZE
 
 - hosts: redis
+  tasks:
+
   - name: Deploy docker to redis container host
     include_tasks: tasks/docker-quay.yml
     when: QUAY_REDIS_CONTAINERIZE
 
 - hosts: quay
+  tasks:
+
   - name: Deploy docker to quay container host
     include_tasks: tasks/docker-quay.yml
