@@ -1,4 +1,4 @@
-[postgresql]
+[database]
 quay.homelab.work
 
 [redis]
@@ -11,7 +11,7 @@ quay.homelab.work
 quay.homelab.work
 
 [quay-systems:children]
-postgresql
+database
 redis
 nfs
 quay

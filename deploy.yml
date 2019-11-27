@@ -23,12 +23,12 @@
     tags:
       - firewall-setup
 
-- hosts: mysql
+- hosts: database
   tasks:
 
-  - name: Deploy docker to mysql container host
+  - name: Deploy docker to database container host
     include_tasks: tasks/docker-quay.yml
-    when: QUAY_MYSQL_CONTAINERIZE
+    when: QUAY_DATABASE_CONTAINERIZE
 
 - hosts: redis
   tasks:
