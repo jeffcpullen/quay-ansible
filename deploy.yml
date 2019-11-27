@@ -24,8 +24,11 @@
       - firewall-setup
 
 - hosts: database
-  tasks:
+  handlers:
+    - name: Include all handlers
+      import_tasks: handlers/main.yml
 
+  tasks:
   - name: Deploy docker to database container host
     include_tasks: tasks/setup-docker.yml
     vars:
@@ -47,14 +50,21 @@
     when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
 
 - hosts: redis
-  tasks:
+  handlers:
+    - name: Include all handlers
+      import_tasks: handlers/main.yml
 
+  tasks:
   - name: Deploy docker to redis container host
     include_tasks: tasks/setup-docker.yml
     vars:
       docker_packages:
         - docker
         - python-docker-py
+    when: QUAY_REDIS_CONTAINERIZE
+
+  - name: Deploy redis container
+    include_tasks: tasks/setup-redis.yml
     when: QUAY_REDIS_CONTAINERIZE
 
 - hosts: quay
