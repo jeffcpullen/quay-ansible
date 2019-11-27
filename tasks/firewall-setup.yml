@@ -2,11 +2,10 @@
 
   - name: Enable firewalld ports
     firewalld:
-      port: "{{ item }}"
+      port: "{{ ports }}"
       permanent: yes
       state: enabled
       zone: public
-    with_items: "{{ ports }}"
     notify:
       - reload-firewall
     tags:
