@@ -3,7 +3,7 @@
   - name: Create env file on target
     template:
       src: templates/mysql-env-file
-      dest: ~/my.cnf
+      dest: ~/.my.cnf
 
   - name: Create /var/lib/mysql
     file:
