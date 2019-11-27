@@ -15,5 +15,10 @@
 
   - name: Configure firewall
     include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 443/tcp
+        - 80/tcp
+        - 111/tcp
     tags:
       - firewall-setup
