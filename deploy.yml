@@ -40,10 +40,10 @@
 
   - name: Deploy docker to redis container host
     include_tasks: tasks/setup-docker.yml
-        vars:
-          docker_packages:
-            - docker
-            - python-docker-py
+    vars:
+      docker_packages:
+        - docker
+        - python-docker-py
     when: QUAY_REDIS_CONTAINERIZE
 
 - hosts: quay
@@ -51,7 +51,7 @@
 
   - name: Deploy docker to quay container host
     include_tasks: tasks/setup-docker.yml
-        vars:
-          docker_packages:
-            - docker
-            - python-docker-py
+    vars:
+      docker_packages:
+        - docker
+        - python-docker-py
