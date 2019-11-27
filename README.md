@@ -8,12 +8,17 @@ Requirements
 
 Before running you need to pull down the roles that this playbook depends on. You may need to define an HTTP proxy for some environments.
 
- `ansible-galaxy install --roles-path ./roles/ -r requirements.yml`
+ ```
+ ansible-galaxy install --roles-path ./roles/ -r requirements.yml
+ ```
 
  Requires Ansible 2.7+
 
  + To run this with the included Satellite registration parts run the following command
- ` ansible-playbook -i hosts deploy.yml -b `
+ ```
+ ansible-playbook -i hosts deploy.yml -b
+ ```
+ 
  + To run this without the satellite registration parts add the following flag `--skip-tags register` and ensure the systems have the following repositories available
 
  ```
