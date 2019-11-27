@@ -35,6 +35,10 @@
         - MySQL-python
     when: QUAY_DATABASE_CONTAINERIZE
 
+  - name: Deploy conatinerized mysql
+    inclue_tasks: tasks/mysql-setup.yml
+    when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
+
 - hosts: redis
   tasks:
 
