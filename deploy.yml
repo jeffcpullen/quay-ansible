@@ -74,13 +74,13 @@
         - docker
         - python-docker-py
 
-    - name: Configure firewall
-      include_tasks: tasks/firewall-setup.yml
-      vars:
-        ports:
-          - 443/tcp
-          - 80/tcp
-          - 8443/tcp
+  - name: Configure firewall
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 443/tcp
+        - 80/tcp
+        - 8443/tcp
 
   - name: Deploy quay config container
     include_tasks: tasks/quay-config-mode.yml
