@@ -27,18 +27,18 @@
   tasks:
 
   - name: Deploy docker to database container host
-    include_tasks: tasks/docker-quay.yml
+    include_tasks: tasks/setup-docker.yml
     when: QUAY_DATABASE_CONTAINERIZE
 
 - hosts: redis
   tasks:
 
   - name: Deploy docker to redis container host
-    include_tasks: tasks/docker-quay.yml
+    include_tasks: tasks/setup-docker.yml
     when: QUAY_REDIS_CONTAINERIZE
 
 - hosts: quay
   tasks:
 
   - name: Deploy docker to quay container host
-    include_tasks: tasks/docker-quay.yml
+    include_tasks: tasks/setup-docker.yml
