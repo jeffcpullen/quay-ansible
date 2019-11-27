@@ -1,0 +1,50 @@
+---
+
+  - name: Create env file on target
+    template:
+      src: mysql-env-file
+      dest: ~/mysql-env-file
+    tags:
+      - deploy-mysql-container
+      - deploy-mysql-env-file
+
+  - name: Create /var/lib/mysql
+    file:
+      path: /var/lib/mysql
+      state: directory
+      mode: '0777'
+    tags:
+      - deploy-mysql-container
+    
+  - name: Install python-docker-py and mysql-python on target
+    yum:
+      name: 
+        - python-docker-py
+        - MySQL-python
+      state: latest
+    tags:
+      - deploy-mysql-container
+
+  - name: Deploy mysql container
+    docker_container:
+      env_file: "~/mysql-env-file"
+      detach: yes
+      restart: yes
+      name: "{{ MYSQL_CONTAINER_NAME }}"
+      privileged: yes
+      published_ports: 3306:3306
+      volumes: /var/lib/mysql:/var/lib/mysql/data:Z
+      image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
+    tags:
+      - deploy-mysql-container
+
+  - name: Ensure that the mysql container is running and quay db exists
+    mysql_db:
+      name: "{{ MYSQL_DATABASE }}"
+      state: present
+      login_host: 127.0.0.1
+      login_user: root
+      login_password: "{{ MYSQL_ROOT_PASSWORD }}"
+    tags:
+      - deploy-mysql-container
+      - test-mysql-db

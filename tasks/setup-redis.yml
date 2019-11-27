@@ -1,0 +1,26 @@
+---
+
+  - name: Create /var/lib/redis
+    file:
+      path: /var/lib/redis
+      state: directory
+      mode: '0777'
+    tags:
+      - deploy-redis-container
+
+  - name: Deploy Redis container
+    docker_container:
+      detach: yes
+      restart: yes
+      name: "redis"
+      privileged: yes
+      published_ports: 6379:6379
+      volumes: /var/lib/redis:/var/lib/redis/data:Z
+      image: "registry.access.redhat.com/rhscl/redis-32-rhel7"
+    tags:
+      - deploy-redis-container
+
+  - name: Test if Redis is up and talking
+    shell: printf "PING\r\n" | nc localhost 6379
+    tags:
+      - deploy-redis-container

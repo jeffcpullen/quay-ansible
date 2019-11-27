@@ -1,0 +1,31 @@
+---
+
+  - name: Start quay in config mode
+    docker_container:
+      detach: yes
+      restart: no
+      name: "quay-config"
+      privileged: yes
+      published_ports: "{{ QUAY_CONFIG_PORT }}:8443"
+      image: "quay.io/redhat/quay:v3.1.3"
+      command: "config {{ QUAY_CONFIG_PASSWORD }}"
+    tags:
+      - deploy-quay-config
+
+  - name: "Go login to quay host on port {{ QUAY_CONFIG_PORT }}"
+    debug:
+      msg: "Login to {{ inventory_hostname }}:{{ QUAY_CONFIG_PORT }} using username quayconfig and password {{ QUAY_CONFIG_PASSWORD }}"
+    tags:
+      - deploy-quay-config
+
+  - name: "Setup configuration options in quay config"
+    debug:
+      msg: "1) Select mysql database option. 2) Fill out the fields with the following data. Database Server = {{ inventory_hostname }}, Username = {{ MYSQL_USER }}, Password = {{ MYSQL_PASSWORD }}, Database Name = {{ MYSQL_DATABASE }}, SSL certificate can be left blank for testing"
+    tags:
+      - deploy-quay-config
+
+  - name: "Final config settings"
+    debug:
+      msg: "At a minimum configure Server Hostname ({{ inventory_hostname }}) and Redis hostname ({{ inventory_hostname }}). Then click Save configuration changes and make sure that the configuration is validated. Download the configuration file and save it at <think of something here>"
+    tags:
+      - deploy-quay-config

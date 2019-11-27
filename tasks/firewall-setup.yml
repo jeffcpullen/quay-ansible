@@ -1,0 +1,16 @@
+---
+
+  - name: Enable firewalld ports
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled
+      zone: public
+    with_items:
+      - 8443/tcp
+      - 80/tcp
+      - 443/tcp
+    notify:
+      - reload-firewall
+    tags:
+      - firewalld

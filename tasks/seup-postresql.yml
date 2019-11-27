@@ -1,0 +1,10 @@
+---
+
+  - name: Install postgresql 95
+    yum:
+      name:
+        - rh-postgresql95
+        - rh-postgresql95-postgresql-contrib
+      state: latest
+    tags:
+      - install-postgres
