@@ -13,16 +13,6 @@
     tags:
       - register
 
-  - name: Configure firewall
-    include_tasks: tasks/firewall-setup.yml
-    vars:
-      ports:
-        - 443/tcp
-        - 80/tcp
-        - 111/tcp
-    tags:
-      - firewall-setup
-
 - hosts: database
   handlers:
     - name: Include all handlers
@@ -63,6 +53,13 @@
         - python-docker-py
     when: QUAY_REDIS_CONTAINERIZE
 
+  - name: Configure firewall
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 6379/tcp
+      when: QUAY_MYSQL_DEPLOY
+
   - name: Deploy redis container
     include_tasks: tasks/setup-redis.yml
     when: QUAY_REDIS_CONTAINERIZE
@@ -76,3 +73,23 @@
       docker_packages:
         - docker
         - python-docker-py
+
+    - name: Configure firewall
+      include_tasks: tasks/firewall-setup.yml
+      vars:
+        ports:
+          - 443/tcp
+          - 80/tcp
+          - 8443/tcp
+
+  - name: Deploy quay config container
+    include_tasks: tasks/quay-config-mode.yml
+    when: QUAY_CONFIG
+
+  - name: Deploy quay container
+    include_tasks: tasks/deploy-quay.yml
+    when: not QUAY_CONFIG
+
+  - name: Deploy quay mirror sync container
+    include_tasks: tasks/quay-mirror.yml
+    when: not QUAY_CONFIG
