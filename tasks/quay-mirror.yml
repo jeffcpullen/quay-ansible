@@ -1,0 +1,12 @@
+---
+  
+  - name: Start quay repository mirror worker
+    docker_container:
+      detach: yes
+      restart: yes
+      name: "mirroring-worker"
+      privileged: no
+      image: "quay.io/redhat/quay:v3.1.3"
+      command: "repomirror"
+    tags:
+      - deploy-quay-mirror

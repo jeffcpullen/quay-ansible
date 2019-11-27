@@ -1,2 +1,5 @@
 ---
 # handlers file for quay-ansible
+
+- name: reload-firewall
+  command: firewall-cmd --reload
