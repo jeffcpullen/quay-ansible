@@ -35,6 +35,13 @@
         - MySQL-python
     when: QUAY_DATABASE_CONTAINERIZE
 
+  - name: Configure firewall
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 3306/tcp
+      when: QUAY_MYSQL_DEPLOY
+
   - name: Deploy conatinerized mysql
     include_tasks: tasks/mysql-setup.yml
     when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
