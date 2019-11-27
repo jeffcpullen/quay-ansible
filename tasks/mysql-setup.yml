@@ -29,3 +29,5 @@
       login_host: 127.0.0.1
       login_user: root
       login_password: "{{ MYSQL_ROOT_PASSWORD }}"
+    retries: 5
+    delay: 10
