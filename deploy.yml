@@ -8,4 +8,8 @@
     tags:
       - register
 
- #
+  - name: Configure firewall
+    include_tasks: firewall-setup.yml
+    tags:
+      - firewall-setup
+  
