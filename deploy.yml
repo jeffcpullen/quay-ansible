@@ -3,7 +3,7 @@
 
   handlers:
     - name: Include all handlers
-      include_tasks: handlers/main.yml
+      import_tasks: handlers/main.yml
 
   tasks:
 
