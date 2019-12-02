@@ -3,15 +3,15 @@
 
 - name: Install satellite katello rpm 
   yum:
-    name: http://sat6.homelab.work/pub/katello-ca-consumer-latest.noarch.rpm
+    name: "http://{{ quay_ansible_satellite_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm"
     state: present 
 
 - name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
   redhat_subscription:
     state: present
-    activationkey: rhel-7-server-minimal
-    org_id: homelab_infra
-    server_hostname: sat6.homelab.work
+    activationkey: "{{ quay_ansible_satellite_key }}"
+    org_id: "{{ quay_ansible_satellite_org }}"
+    server_hostname: "{{ quay_ansible_satellite_fqdn }}"
     
 
 - name: Enable all repositories starting with rhel-7-server

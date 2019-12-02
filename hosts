@@ -15,3 +15,8 @@ database
 redis
 nfs
 quay
+
+[quay-systems:vars]
+quay_ansible_satellite_fqdn=sat6.homelab.work
+quay_ansible_satellite_key=rhel-7-server-minimal
+quay_ansible_satellite_org=homelab_infra
