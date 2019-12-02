@@ -1,24 +1,35 @@
 ---
 # tasks file for register-system
 
-- name: Install satellite katello rpm 
+- name: Install satellite katello rpm
   yum:
+<<<<<<< HEAD
     name: "http://{{ quay_ansible_satellite_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm"
     state: present 
+=======
+    name: http://sat6.homelab.work/pub/katello-ca-consumer-latest.noarch.rpm
+    state: present
+>>>>>>> 90df8245eb877b7c2b424045dec025507d4544e8
 
 - name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
   redhat_subscription:
     state: present
+<<<<<<< HEAD
     activationkey: "{{ quay_ansible_satellite_key }}"
     org_id: "{{ quay_ansible_satellite_org }}"
     server_hostname: "{{ quay_ansible_satellite_fqdn }}"
     
+=======
+    activationkey: rhel-7-server-minimal
+    org_id: homelab_infra
+    server_hostname: sat6.homelab.work
+
+>>>>>>> 90df8245eb877b7c2b424045dec025507d4544e8
 
 - name: Enable all repositories starting with rhel-7-server
   rhsm_repository:
     name:
       - rhel-7-server-rpms
       - rhel-7-server-extras-rpms
-      - rhel-server-rhscl-7-rpms
     state: enabled
     purge: yes
