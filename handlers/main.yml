@@ -3,3 +3,8 @@
 
 - name: reload-firewall
   command: firewall-cmd --reload
+
+- name: restart docker
+  systemd:
+    name: docker
+    state: restarted

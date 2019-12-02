@@ -20,6 +20,11 @@
     tags:
       - deploy-redis-container
 
+  - name: Install netcat if it isn't there already
+    yum:
+      name: nmap-ncat
+      state: latest
+
   - name: Test if Redis is up and talking
     shell: printf "PING\r\n" | nc localhost 6379
     tags:

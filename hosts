@@ -17,6 +17,7 @@ nfs
 quay
 
 [quay-systems:vars]
+ansible_ssh_user=root
 quay_ansible_satellite_fqdn=sat6.homelab.work
 quay_ansible_satellite_key=rhel-7-server-minimal
 quay_ansible_satellite_org=homelab_infra

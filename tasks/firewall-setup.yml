@@ -1,5 +1,18 @@
 ---
 
+  - name: Ensure firewalld is installed
+    yum:
+      name: firewalld
+      state: latest
+
+  - name: Ensure firewalld is started
+    systemd:
+      name: firewalld
+      state: started
+      enabled: yes
+    notify:
+      - restart docker
+
   - name: Enable firewalld ports
     firewalld:
       port: "{{ item }}"
@@ -11,3 +24,4 @@
       - reload-firewall
     tags:
       - firewall-setup
+
