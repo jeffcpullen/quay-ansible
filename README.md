@@ -31,6 +31,13 @@ Before running you need to pull down the roles that this playbook depends on. Yo
 
 + If you've already run the config mode, or have a config tarball you can run the full deployment by referencing a configuration tarball. After running through the Quay config WebUI, copy the downloaded tarball to the ansible host and reference it with `-e QUAY_CONFIG_TAR=<path to tarball>`
 
+Note to self, make this more clear
+
+```
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG=true
+```
+
+
 ```
 ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=~/quay-config.tar.gz
 ```
