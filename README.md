@@ -6,11 +6,15 @@ This role is intended to install Quay and its dependencies to one or more system
 Requirements
 ------------
 
-Before running you need to pull down the roles that this playbook depends on. You may need to define an HTTP proxy for some environments.
+Before running:
+
+1) You'll need to pull down the roles that this playbook depends on. You may need to define an HTTP proxy for some environments.
 
  ```
  ansible-galaxy install --roles-path ./roles/ -r requirements.yml
  ```
+
+2) Get the quay shared secret from https://access.redhat.com/solutions/3533201
 
  Requires Ansible 2.7+
 

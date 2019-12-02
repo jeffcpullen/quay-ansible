@@ -65,6 +65,10 @@
     when: QUAY_REDIS_CONTAINERIZE
 
 - hosts: quay
+  handlers:
+    - name: Include all handlers
+      import_tasks: handlers/main.yml
+
   tasks:
 
   - name: Deploy docker to quay container host
