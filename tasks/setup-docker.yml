@@ -4,10 +4,22 @@
       name: "{{ docker_packages }}" 
       state: latest
     tags:
-      - install-docker
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
+      - docker
 
   - name: Start and enable docker
     systemd:
       name: docker
       state: started
       enabled: yes
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
+      - docker

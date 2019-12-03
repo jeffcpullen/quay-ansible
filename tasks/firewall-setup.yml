@@ -4,6 +4,12 @@
     yum:
       name: firewalld
       state: latest
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Ensure firewalld is started
     systemd:
@@ -12,16 +18,41 @@
       enabled: yes
     notify:
       - restart docker
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
+
+  - name: Add docker0 interface to trusted zone
+    firewalld:
+      zone: trusted
+      interface: docker0
+      permanent: yes
+      state: enabled
+    notify:
+      - reload-firewall
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Enable firewalld ports
     firewalld:
       port: "{{ item }}"
+      zone: "{{ firewall_zone }}"
       permanent: yes
       state: enabled
-      zone: public
     with_items: "{{ ports }}"
     notify:
       - reload-firewall
     tags:
-      - firewall-setup
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 

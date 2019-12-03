@@ -5,14 +5,14 @@
       name: quay-config
       state: stopped
     tags:
-      - deploy-quay
+      - quay
 
   - name: "Create quay config directory"
     file:
       state: directory
       path: /mnt/quay/config 
     tags:
-      - deploy-quay
+      - quay
   
   - name: "Create quay storage directory (when object storage is not available)"
     file:
@@ -20,7 +20,7 @@
       path: /mnt/quay/storage
     when: not QUAY_OBJECT_STORAGE 
     tags:
-      - deploy-quay
+      - quay
 
   - name: Copy the tarball to the quay host
     unarchive:
@@ -28,7 +28,7 @@
       dest: /mnt/quay/config/
       copy: yes
     tags:
-      - deploy-quay
+      - quay
 
   - name: Start quay
     docker_container:
@@ -45,4 +45,4 @@
         - /mnt/quay/config:/conf/stack:Z
         - /mnt/quay/storage:/datastorage:Z
     tags:
-      - deploy-quay 
+      - quay 

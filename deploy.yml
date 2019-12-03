@@ -17,6 +17,8 @@
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
+      tags:
+        - database
 
   tasks:
   - name: Deploy docker to database container host
@@ -27,22 +29,42 @@
         - python-docker-py
         - MySQL-python
     when: QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
 
   - name: Configure firewall
     include_tasks: tasks/firewall-setup.yml
     vars:
       ports:
         - 3306/tcp
-      when: QUAY_MYSQL_DEPLOY
+      firewall_zone: public
+      when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
+
+  - name: Configure firewall
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 3306/tcp
+      firewall_zone: trusted
+      when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
 
   - name: Deploy conatinerized mysql
     include_tasks: tasks/mysql-setup.yml
     when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
+
 
 - hosts: redis
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
+      tags:
+        - redis
 
   tasks:
   - name: Deploy docker to redis container host
@@ -52,22 +74,43 @@
         - docker
         - python-docker-py
     when: QUAY_REDIS_CONTAINERIZE
+    tags:
+      - redis
 
   - name: Configure firewall
     include_tasks: tasks/firewall-setup.yml
     vars:
       ports:
         - 6379/tcp
-      when: QUAY_MYSQL_DEPLOY
+      firewall_zone: public
+      when: QUAY_REDIS_DEPLOY and not QUAY_REDIS_CONTAINERIZE
+      tags:
+        - redis
+
+  - name: Configure firewall
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - 6379/tcp
+      firewall_zone: trusted
+      when: QUAY_REDIS_DEPLOY and QUAY_REDIS_CONTAINERIZE
+      tags:
+        - redis
 
   - name: Deploy redis container
     include_tasks: tasks/setup-redis.yml
     when: QUAY_REDIS_CONTAINERIZE
+    tags:
+      - redis
 
 - hosts: quay
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
+      tags:
+        - quay
+        - quay-config
+        - quay-worker
 
   tasks:
 
@@ -77,6 +120,10 @@
       docker_packages:
         - docker
         - python-docker-py
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
 
   - name: Configure firewall
     include_tasks: tasks/firewall-setup.yml
@@ -85,15 +132,25 @@
         - 443/tcp
         - 80/tcp
         - 8443/tcp
+      firewall_zone: public
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
 
   - name: Deploy quay config container
     include_tasks: tasks/quay-config-mode.yml
     when: QUAY_CONFIG is defined and QUAY_CONFIG
+    tags:
+      - quay-config
 
   - name: Deploy quay container
     include_tasks: tasks/deploy-quay.yml
     when: QUAY_CONFIG is undefined or not QUAY_CONFIG
+    tags:
+      - quay
 
   - name: Deploy quay mirror sync container
     include_tasks: tasks/quay-mirror.yml
-    when: QUAY_CONFIG is undefined or not QUAY_CONFIG
+    tags:
+      - quay-worker

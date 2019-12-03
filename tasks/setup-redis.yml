@@ -6,7 +6,11 @@
       state: directory
       mode: '0777'
     tags:
-      - deploy-redis-container
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Deploy Redis container
     docker_container:
@@ -18,14 +22,28 @@
       volumes: /var/lib/redis:/var/lib/redis/data:Z
       image: "registry.access.redhat.com/rhscl/redis-32-rhel7"
     tags:
-      - deploy-redis-container
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Install netcat if it isn't there already
     yum:
       name: nmap-ncat
       state: latest
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Test if Redis is up and talking
     shell: printf "PING\r\n" | nc localhost 6379
     tags:
-      - deploy-redis-container
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database

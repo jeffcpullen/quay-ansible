@@ -7,6 +7,8 @@
       name: "mirroring-worker"
       privileged: no
       image: "quay.io/redhat/quay:v3.1.3"
+      volumes:
+        - /mnt/quay/config:/conf/stack:Z
       command: "repomirror"
     tags:
-      - deploy-quay-mirror
+      - quay-worker

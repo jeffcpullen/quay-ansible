@@ -4,12 +4,24 @@
     template:
       src: templates/mysql-env-file
       dest: ~/mysql-env-file
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Create /var/lib/mysql
     file:
       path: /var/lib/mysql
       state: directory
       mode: '0777'
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Deploy mysql container
     docker_container:
@@ -21,6 +33,12 @@
       published_ports: 3306:3306
       volumes: /var/lib/mysql:/var/lib/mysql/data:Z
       image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
 
   - name: Ensure that the mysql container is running and quay db exists
     mysql_db:
@@ -33,3 +51,9 @@
     until: mysql_result is succeeded
     retries: 5
     delay: 10
+    tags:
+      - quay
+      - quay-config
+      - quay-worker
+      - redis
+      - database
