@@ -1,3 +1,6 @@
+QUAY_IMAGE_VERSION: "quay.io/redhat/quay:v3.1.3"
+#QUAY_IMAGE_VERSION: "quay.io/quay/quay:v3.2.0-3"
+
 MYSQL_CONTAINER_NAME: mysql
 MYSQL_DATABASE: enterpriseregistrydb
 MYSQL_PASSWORD: JzxCTamgFBmHRhcGFtoPHFkrx1BH2vwQ

@@ -6,7 +6,7 @@
       restart: yes
       name: "mirroring-worker"
       privileged: no
-      image: "quay.io/redhat/quay:v3.1.3"
+      image: "{{ QUAY_IMAGE_VERSION }}"
       volumes:
         - /mnt/quay/config:/conf/stack:Z
       command: "repomirror"

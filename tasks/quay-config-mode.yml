@@ -7,7 +7,7 @@
       name: "quay-config"
       privileged: yes
       published_ports: "{{ QUAY_CONFIG_PORT }}:8443"
-      image: "quay.io/redhat/quay:v3.1.3"
+      image: "{{ QUAY_IMAGE_VERSION }}"
       command: "config {{ QUAY_CONFIG_PASSWORD }}"
     tags:
       - quay-config
