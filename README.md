@@ -14,7 +14,17 @@ Before running:
  ansible-galaxy install --roles-path ./roles/ -r requirements.yml
  ```
 
-2) Get the quay shared secret from https://access.redhat.com/solutions/3533201
+2) Get the quay shared secret from https://access.redhat.com/solutions/3533201. 
+
+     If Docker is already installed on the quay host run the docker login string provided in that solution
+     
+     If Docker isn't installed yet you can add the config.json to the system in advance of Docker (which will be installed as part of this playbook)
+     
+     ``` 
+     mkdir -p ~/.docker
+     vi ~/.docker/config.json
+     <paste in solution config.json>
+     ```
 
 3) Requires Ansible 2.7+ on the host executing these playbooks
 
