@@ -16,7 +16,7 @@ Before running:
 
 2) Get the quay shared secret from https://access.redhat.com/solutions/3533201
 
- Requires Ansible 2.7+
+3) Requires Ansible 2.7+ on the host executing these playbooks
 
  + To run this with the included Satellite registration parts run the following command
  ```
