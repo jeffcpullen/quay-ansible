@@ -28,9 +28,13 @@ Before running:
 
 3) Requires Ansible 2.7+ on the host executing these playbooks
 
- + To run this with the included Satellite registration parts run the following command
+
+Usage
+-----
+
+ + To register a system to satellite with the necessary repositories
  ```
- ansible-playbook -i hosts deploy.yml -b
+ ansible-playbook -i hosts deploy.yml -b --tags register
  ```
  
  + To run this without the satellite registration parts add the following flag `--skip-tags register` and ensure the systems have the following repositories available
@@ -43,17 +47,22 @@ Before running:
 
 + If this is the first time that you've installed Quay, you will need to go through the Quay configuration mode to create your config tarball. Do this by adding the following flag to the playbook `-e QUAY_CONFIG=true`
 
+```
+ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
+```
+
+
 + If you've already run the config mode, or have a config tarball you can run the full deployment by referencing a configuration tarball. After running through the Quay config WebUI, copy the downloaded tarball to the ansible host and reference it with `-e QUAY_CONFIG_TAR=<path to tarball>`
 
-Note to self, make this more clear
 
 ```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG=true
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
 ```
 
++ Deploy quay mirroring worker
 
 ```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=~/quay-config.tar.gz
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --tags quay-worker
 ```
 
 
