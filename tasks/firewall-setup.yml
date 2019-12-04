@@ -4,6 +4,8 @@
     yum:
       name: firewalld
       state: latest
+    notify:
+      - restart docker
     tags:
       - quay
       - quay-config
@@ -33,6 +35,7 @@
       state: enabled
     notify:
       - reload-firewall
+      - restart docker
     tags:
       - quay
       - quay-config
@@ -49,6 +52,7 @@
     with_items: "{{ ports }}"
     notify:
       - reload-firewall
+      - restart docker
     tags:
       - quay
       - quay-config
@@ -56,3 +60,5 @@
       - redis
       - database
 
+  - name: Force all notified handlers to run at this point, not waiting for normal sync points
+    meta: flush_handlers
