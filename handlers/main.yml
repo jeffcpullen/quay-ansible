@@ -8,3 +8,4 @@
   systemd:
     name: docker
     state: restarted
+  ignore_errors: yes

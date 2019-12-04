@@ -32,6 +32,14 @@
     tags:
       - database
 
+  - name: Deploy python components for Ansible to database container host
+    yum:
+      name: MySQL-python
+      state: latest
+    when: not QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
+
   - name: Configure firewall
     include_tasks: tasks/firewall-setup.yml
     vars:
@@ -60,11 +68,16 @@
 
   - name: Deploy mysql
     include_role:
-      name: geerlingguy.mysql
+      name: robertdebock.mysql
     when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
     tags:
       - database
 
+  - name: Test mysql
+    include_tasks: tasks/mysql-test.yml
+    when: QUAY_MYSQL_DEPLOY
+    tags:
+      - database
 
 - hosts: redis
   handlers:
