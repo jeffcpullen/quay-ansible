@@ -61,7 +61,7 @@
   - name: Deploy mysql
     include_role:
       name: geerlingguy.mysql
-      when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
     tags:
       - database
 
