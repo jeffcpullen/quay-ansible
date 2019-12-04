@@ -32,6 +32,14 @@ Before running:
 Usage
 -----
 
+The Mysql that ships with RHEL 7 (version 5.5) doesn't work with Quay. In order to get a newer version, we will need to enable and select Mysql 10.3 from Software Collections. We can do that by adding the following extra vars to the execution.
+
+```
+--extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}'
+--extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
+```
+
+
  + To register a system to satellite with the necessary repositories
  ```
  ansible-playbook -i hosts deploy.yml -b --tags register

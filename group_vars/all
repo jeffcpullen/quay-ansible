@@ -31,3 +31,34 @@ mysql_users:
     host: "%"
     password: "{{ MYSQL_PASSWORD }}"
     priv: "{{ MYSQL_DATABASE }}.*:ALL"
+
+
+_mysql_packages:
+  default:
+    - mariadb-server
+    - mariadb-devel
+    - python2-mysql
+  RedHat-7:
+    - rh-mariadb103-scldevel.x86_64
+    - rh-mariadb103-syspaths
+    - MySQL-python
+  CentOS-7:
+    - mariadb-devel
+    - mariadb-server
+    - MySQL-python
+  CentOS:
+    - mysql-devel
+    - mysql-server
+    - python3-PyMySQL
+
+
+_mysql_service:
+  default: mysql
+  Alpine: mariadb
+  Amazon: mariadb
+  Amazon-2018: mysqld
+  Archlinux: mariadb
+  Fedora: mariadb
+  RedHat-7: rh-mariadb103-mariadb
+  RedHat: mysqld
+
