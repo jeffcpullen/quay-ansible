@@ -24,3 +24,10 @@ mysql_root_home: /root
 mysql_root_username: root
 mysql_root_password: "{{ MYSQL_ROOT_PASSWORD }}"
 mysql_enabled_on_startup: true
+mysql_databases:
+  - "{{ MYSQL_DATABASE }}"
+mysql_users:
+  - name: "{{ MYSQL_USER }}"
+    host: "%"
+    password: "{{ MYSQL_PASSWORD }}"
+    priv: "{{ MYSQL_DATABASE }}.*:ALL"
