@@ -9,3 +9,6 @@
 
 # Install nfs from galaxy
 - src: geerlingguy.nfs
+
+# Install mysql from galaxy
+- src: geerlingguy.mysql

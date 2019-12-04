@@ -5,6 +5,8 @@
   yum:
     name: "http://{{ quay_ansible_satellite_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm"
     state: present
+  tags:
+    - register
 
 - name: Register with activationkey and consume subscriptions matching Red Hat Enterprise Server
   redhat_subscription:
@@ -12,6 +14,8 @@
     activationkey: "{{ quay_ansible_satellite_key }}"
     org_id: "{{ quay_ansible_satellite_org }}"
     server_hostname: "{{ quay_ansible_satellite_fqdn }}"
+  tags:
+    - register
 
 - name: Enable all repositories starting with rhel-7-server
   rhsm_repository:
@@ -19,4 +23,6 @@
       - rhel-7-server-rpms
       - rhel-7-server-extras-rpms
     state: enabled
+  tags:
+    - register
 #    purge: yes
