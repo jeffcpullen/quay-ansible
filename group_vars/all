@@ -18,3 +18,9 @@ QUAY_DATABASE_CONTAINERIZE: true
 # Choose one or the other
 QUAY_MYSQL_DEPLOY: true
 QUAY_POSTGRESQL_DEPLOY: false
+
+# Mysql role
+mysql_root_home: /root
+mysql_root_username: root
+mysql_root_password: "{{ MYSQL_ROOT_PASSWORD }}"
+mysql_enabled_on_startup: true
