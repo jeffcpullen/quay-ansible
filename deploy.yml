@@ -95,7 +95,7 @@
           password: my-secret-password
       postgresql_databases:
         - name: clair
-          owner: clair
+          owner: quay
           state: present
       __postgresql_packages:
         - rh-postgresql96-postgresql-syspaths
