@@ -15,7 +15,6 @@ QUAY_REDIS_DEPLOY: true
 QUAY_REDIS_CONTAINERIZE: true
 QUAY_DATABASE_CONTAINERIZE: false
 
-# Choose one or the other
 QUAY_MYSQL_DEPLOY: true
 QUAY_POSTGRESQL_DEPLOY: false
 
@@ -61,4 +60,3 @@ _mysql_service:
   Fedora: mariadb
   RedHat-7: rh-mariadb103-mariadb
   RedHat: mysqld
-
