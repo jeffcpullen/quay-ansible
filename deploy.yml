@@ -92,7 +92,7 @@
         - name: clair
           owner: clair
           state: preset
-       __postgresql_packages:
+      __postgresql_packages:
         - rh-postgresql96-postgresql-syspaths
         - rh-postgresql96-postgresql-server-syspaths
         - rh-postgresql96-postgresql-contrib-syspaths
