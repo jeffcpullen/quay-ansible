@@ -207,3 +207,8 @@
     include_tasks: tasks/quay-mirror.yml
     tags:
       - quay-worker
+
+  - name: Deploy clair
+    include_tasks: tasks/quay-clair.yml
+    tags:
+      - quay-clair 
