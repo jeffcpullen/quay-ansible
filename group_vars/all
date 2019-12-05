@@ -1,6 +1,8 @@
 QUAY_IMAGE_VERSION: "quay.io/redhat/quay:v3.1.3"
 #QUAY_IMAGE_VERSION: "quay.io/quay/quay:v3.2.0-3"
 
+QUAY_ENDPOINT: quay.homelab.work
+
 MYSQL_CONTAINER_NAME: mysql
 MYSQL_DATABASE: enterpriseregistrydb
 MYSQL_PASSWORD: JzxCTamgFBmHRhcGFtoPHFkrx1BH2vwQ
@@ -38,6 +40,7 @@ postgresql_unix_socket_directories:
   - /var/run/postgresql
 postgresql_service_state: started
 postgresql_service_enabled: true
+POSTGRES_CONNECTION_STRING: postgresql://quay@localhost:5432/clair?sslmode=disable
 
 
 _mysql_packages:
