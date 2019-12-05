@@ -96,7 +96,7 @@
       postgresql_databases:
         - name: clair
           owner: clair
-          state: preset
+          state: present
       __postgresql_packages:
         - rh-postgresql96-postgresql-syspaths
         - rh-postgresql96-postgresql-server-syspaths
