@@ -23,6 +23,6 @@
         - "6061:6061"
       image: "quay.io/redhat/clair-jwt:v3.1.3"
       volumes:
-        - "/path/to/clair/config/directory:/clair/config:Z"
+        - "/mnt/quay/clair:/clair/config:Z"
     tags:
       - postgres
