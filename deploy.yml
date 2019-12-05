@@ -73,11 +73,26 @@
     tags:
       - database
 
+  - name: Install postgres pre-reqs
+    yum:
+      name: python-psycopg2
+      state: latest
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
+
   - name: Deploy postgres
     include_role:
       name: geerlingguy.postgresql
     vars:
-      __postgresql_packages:
+      postgresql_users:
+        - name: quay
+          password: my-secret-password
+      postgresql_databases:
+        - name: clair
+          owner: clair
+          state: preset
+       __postgresql_packages:
         - rh-postgresql96-postgresql-syspaths
         - rh-postgresql96-postgresql-server-syspaths
         - rh-postgresql96-postgresql-contrib-syspaths
