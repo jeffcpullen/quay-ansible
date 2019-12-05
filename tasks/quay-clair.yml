@@ -6,6 +6,7 @@
       owner:
       group:
       mode: '0644'
+      state: directory
 
   - name: Deploy quay config
     template:
