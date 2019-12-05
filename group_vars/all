@@ -2,6 +2,7 @@ QUAY_IMAGE_VERSION: "quay.io/redhat/quay:v3.1.3"
 #QUAY_IMAGE_VERSION: "quay.io/quay/quay:v3.2.0-3"
 
 QUAY_ENDPOINT: quay.homelab.work
+CLAIR_ENDPOINT: "{{ QUAY_ENDPOINT }}"
 
 MYSQL_CONTAINER_NAME: mysql
 MYSQL_DATABASE: enterpriseregistrydb
