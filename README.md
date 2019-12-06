@@ -56,7 +56,7 @@ The Mysql that ships with RHEL 7 (version 5.5) doesn't work with Quay. In order 
 + If this is the first time that you've installed Quay, you will need to go through the Quay configuration mode to create your config tarball. Do this by adding the following flag to the playbook `-e QUAY_CONFIG=true`
 
 ```
-ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
+ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
 ```
 
 
@@ -64,13 +64,13 @@ ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
 
 
 ```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
 ```
 
 + Deploy quay mirroring worker
 
 ```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --tags quay-worker
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --tags quay-worker --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
 ```
 
 
