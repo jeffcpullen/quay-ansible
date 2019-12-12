@@ -10,14 +10,14 @@
   - name: "Create quay config directory"
     file:
       state: directory
-      path: /mnt/quay/config 
+      path: "{{ QUAY_ROOT_DIR }}/config"
     tags:
       - quay
   
   - name: "Create quay storage directory (when object storage is not available)"
     file:
       state: directory
-      path: /mnt/quay/storage
+      path: "{{ QUAY_ROOT_DIR }}/storage"
     when: not QUAY_OBJECT_STORAGE 
     tags:
       - quay
@@ -25,7 +25,7 @@
   - name: Copy the tarball to the quay host
     unarchive:
       src: "{{ QUAY_CONFIG_TAR }}"
-      dest: /mnt/quay/config/
+      dest: "{{ QUAY_ROOT_DIR }}/config/"
       copy: yes
     tags:
       - quay
@@ -43,7 +43,7 @@
         - "{{ QUAY_HTTPS_PORT }}:8443"
       image: "{{ QUAY_IMAGE_VERSION }}"
       volumes:
-        - /mnt/quay/config:/conf/stack:Z
-        - /mnt/quay/storage:/datastorage:Z
+        - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
+        - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
     tags:
       - quay 

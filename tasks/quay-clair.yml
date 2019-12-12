@@ -2,7 +2,7 @@
 
   - name: Make clair working directory
     file:
-      path: /mnt/quay/clair/
+      path: "{{ QUAY_ROOT_DIR }}/clair/"
       owner:
       group:
       mode: '0644'
@@ -11,7 +11,7 @@
   - name: Deploy quay config
     template:
       src: templates/clair-config.j2
-      dest: /mnt/quay/clair/config.yaml
+      dest: "{{ QUAY_ROOT_DIR }}/clair/config.yaml"
 
   - name: Start clair container
     docker_container:
@@ -23,6 +23,6 @@
         - "6061:6061"
       image: "quay.io/redhat/clair-jwt:v3.1.3"
       volumes:
-        - "/mnt/quay/clair:/clair/config:Z"
+        - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
     tags:
       - postgres

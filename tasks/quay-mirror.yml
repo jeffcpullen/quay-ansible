@@ -8,7 +8,7 @@
       privileged: no
       image: "{{ QUAY_IMAGE_VERSION }}"
       volumes:
-        - /mnt/quay/config:/conf/stack:Z
+        - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
       command: "repomirror"
     tags:
       - quay-worker
