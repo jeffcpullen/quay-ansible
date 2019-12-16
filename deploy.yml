@@ -70,6 +70,21 @@
   - name: Deploy mysql
     include_role:
       name: robertdebock.mysql
+    vars:
+      _mysql_service:
+        default:
+          - mysql
+        RedHat-7:
+          - rh-mariadb103-mariadb
+      _mysql_packages:
+        default:
+          - mariadb-server
+          - mariadb-devel
+          - python2-mysql
+        RedHat-7:
+          - rh-mariadb103-scldevel.x86_64
+          - rh-mariadb103-syspaths
+          - MySQL-python
     when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
     tags:
       - database
