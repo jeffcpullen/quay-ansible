@@ -28,6 +28,8 @@ Before running:
 
 3) Requires Ansible 2.7+ on the host executing these playbooks
 
+4) You should have sufficient storage allocated to the node to hold the downloaded images. This directory is defined in the group_vars/all as the QUAY_STORAGE_DIR. Default is /opt/quay/storage.
+
 
 Usage
 -----
