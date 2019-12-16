@@ -73,9 +73,9 @@
     vars:
       _mysql_service:
         default:
-          - mysql
+          mysql
         RedHat-7:
-          - rh-mariadb103-mariadb
+          rh-mariadb103-mariadb
       _mysql_packages:
         default:
           - mariadb-server
