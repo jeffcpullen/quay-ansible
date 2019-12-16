@@ -10,6 +10,7 @@
   - name: Register system to satellite and repos
     include_role:
       name: register-system
+    when: SATELLITE_REGISTER
     tags:
       - register
 
@@ -211,4 +212,4 @@
   - name: Deploy clair
     include_tasks: tasks/quay-clair.yml
     tags:
-      - quay-clair 
+      - quay-clair

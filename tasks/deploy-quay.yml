@@ -13,12 +13,12 @@
       path: "{{ QUAY_ROOT_DIR }}/config"
     tags:
       - quay
-  
+
   - name: "Create quay storage directory (when object storage is not available)"
     file:
       state: directory
-      path: "{{ QUAY_ROOT_DIR }}/storage"
-    when: not QUAY_OBJECT_STORAGE 
+      path: "{{ QUAY_STORAGE_DIR }}"
+    when: not QUAY_OBJECT_STORAGE
     tags:
       - quay
 
@@ -38,7 +38,7 @@
       name: "quay"
       privileged: yes
       sysctls: { net.core.somaxconn: 4096 }
-      published_ports: 
+      published_ports:
         - "{{ QUAY_HTTP_PORT }}:8080"
         - "{{ QUAY_HTTPS_PORT }}:8443"
       image: "{{ QUAY_IMAGE_VERSION }}"
@@ -46,4 +46,4 @@
         - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
         - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
     tags:
-      - quay 
+      - quay

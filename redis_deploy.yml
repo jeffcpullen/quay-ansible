@@ -1,3 +1,0 @@
-- hosts: redis
-  roles:
-    - role: geerlingguy.redis

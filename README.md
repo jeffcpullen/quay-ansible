@@ -14,13 +14,13 @@ Before running:
  ansible-galaxy install --roles-path ./roles/ -r requirements.yml
  ```
 
-2) Get the quay shared secret from https://access.redhat.com/solutions/3533201. 
+2) Get the quay shared secret from https://access.redhat.com/solutions/3533201.
 
      If Docker is already installed on the quay host run the docker login string provided in that solution
-     
+
      If Docker isn't installed yet you can add the config.json to the system in advance of Docker (which will be installed as part of this playbook)
-     
-     ``` 
+
+     ```
      mkdir -p ~/.docker
      vi ~/.docker/config.json
      <paste in solution config.json>
@@ -40,12 +40,12 @@ The Mysql that ships with RHEL 7 (version 5.5) doesn't work with Quay. In order 
 ```
 
 
- + To register a system to satellite with the necessary repositories
+ + To register a system to satellite with the necessary repositories update SATELLITE_REGISTER variable via group_vars/all or by defining it as an extra variable
  ```
- ansible-playbook -i hosts deploy.yml -b --tags register
+ -e SATELLITE_REGISTER=true
  ```
- 
- + To run this without the satellite registration parts add the following flag `--skip-tags register` and ensure the systems have the following repositories available
+
+ + If you aren't using the satellite registration plays ensure the systems have the following repositories available
 
  ```
        - rhel-7-server-rpms
