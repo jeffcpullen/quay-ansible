@@ -4,6 +4,7 @@
     docker_container:
       name: quay-config
       state: stopped
+    ignore_errors: true
     tags:
       - quay
 
