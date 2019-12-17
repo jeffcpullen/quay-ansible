@@ -15,6 +15,3 @@
     name: "rh-{{ postgresql_version }}-postgresql.service"
     state: restarted
     enabled: yes
-
-- name: init postgres
-  command: scl enable rh-postgresql96 -- postgresql-setup --initdb
