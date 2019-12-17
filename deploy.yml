@@ -23,7 +23,7 @@
 
   tasks:
   - name: Deploy docker to database container host
-    include_tasks: tasks/.yml
+    include_tasks: tasks/deploy-docker.yml
     vars:
       docker_packages:
         - docker
@@ -145,7 +145,7 @@
 
   tasks:
   - name: Deploy docker to redis container host
-    include_tasks: tasks/.yml
+    include_tasks: tasks/deploy-docker.yml
     vars:
       docker_packages:
         - docker
@@ -175,7 +175,7 @@
         - redis
 
   - name: Deploy redis container
-    include_tasks: tasks/.yml
+    include_tasks: tasks/deploy-redis.yml
     when: QUAY_REDIS_CONTAINERIZE
     tags:
       - redis
@@ -192,7 +192,7 @@
   tasks:
 
   - name: Deploy docker to quay container host
-    include_tasks: tasks/.yml
+    include_tasks: tasks/deploy-docker.yml
     vars:
       docker_packages:
         - docker
