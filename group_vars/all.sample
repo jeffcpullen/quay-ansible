@@ -49,8 +49,9 @@ postgresql_unix_socket_directories:
   - /var/run/postgresql
 postgresql_service_state: started
 postgresql_service_enabled: true
-POSTGRES_CONNECTION_STRING: "postgresql://{{ postgresql_quay_user }}@{{ QUAY_ENDPOINT }}:5432/clair?sslmode=disable"
 POSTGRES_PORT_5432_TCP_PORT: 5432
+#POSTGRES_CONNECTION_STRING: "postgresql://{{ postgresql_quay_user }}@{{ QUAY_ENDPOINT }}:{{ POSTGRES_PORT_5432_TCP_PORT }}/{{ postgresql_quay_db }}?sslmode=disable"
+POSTGRES_CONNECTION_STRING: "host={{ QUAY_ENDPOINT }} sslmode=disable dbname={{ postgresql_quay_db }} user={{ postgresql_quay_user }} password={{ postgresql_quay_user_password }} statement_timeout=60000"
 
 
 _mysql_packages:

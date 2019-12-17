@@ -4,7 +4,7 @@ clair:
     options:
       # A PostgreSQL Connection string pointing to the Clair Postgres database.
       # Documentation on the format can be found at: http://www.postgresql.org/docs/9.4/static/libpq-connect.html
-      source: {{ POSTGRES_CONNECTION_STRING }}
+      source: "{{ POSTGRES_CONNECTION_STRING }}"
       cachesize: 16384
   api:
     # The port at which Clair will report its health status. For example, if Clair is running at
