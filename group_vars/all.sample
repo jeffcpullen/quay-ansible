@@ -20,6 +20,11 @@ QUAY_REDIS_DEPLOY: true
 QUAY_REDIS_CONTAINERIZE: true
 QUAY_DATABASE_CONTAINERIZE: false
 
+# Clair needs additional proxy settings independent of of what is setup in Quay
+#QUAY_CLAIR_HTTP_PROXY: http://proxy.example.com:8080
+#QUAY_CLAIR_HTTPS_PROXY: http://proxy.example.com:8080
+#QUAY_CLAIR_HTTP_NO_PROXY: "{{ QUAY_ENDPOINT }}"
+
 QUAY_MYSQL_DEPLOY: true
 QUAY_POSTGRESQL_DEPLOY: true
 
