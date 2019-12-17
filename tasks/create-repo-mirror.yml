@@ -4,11 +4,11 @@
   hosts: quay
   gather_facts: yes
   vars:
-    QUAY_AUTH_TOKEN: 'REPLACE_ME_QUAY API TOKEN'
-    USERNAME: 'REPLACE_ME_EXTERNAL REGISTRY USER'
-    PASSWORD: 'REPLACE_ME_EXTERNAL REGISTRY PASSWORD'
+    QUAY_AUTH_TOKEN: "{{ QUAY_AUTH_TOKEN }}"
+    USERNAME: "{{ UPSTREAM_REGISTRY_USERNAME }}"
+    PASSWORD: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
   vars_files:
-     - "{{ images }}"
+     - files/quay-preload-mirrors.yml
   tasks:
     - name: Create repo
       uri:
