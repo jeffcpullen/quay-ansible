@@ -28,16 +28,11 @@ Before running:
 
 3) Requires Ansible 2.7+ on the host executing these playbooks
 
+4) You should have sufficient storage allocated to the node to hold the downloaded images. This directory is defined in the group_vars/all as the QUAY_STORAGE_DIR. Default is /opt/quay/storage.
+
 
 Usage
 -----
-
-The Mysql that ships with RHEL 7 (version 5.5) doesn't work with Quay. In order to get a newer version, we will need to enable and select Mysql 10.3 from Software Collections. We can do that by adding the following extra vars to the execution.
-
-```
---extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}'
---extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
-```
 
 
  + To register a system to satellite with the necessary repositories update SATELLITE_REGISTER variable via group_vars/all or by defining it as an extra variable
@@ -56,7 +51,7 @@ The Mysql that ships with RHEL 7 (version 5.5) doesn't work with Quay. In order 
 + If this is the first time that you've installed Quay, you will need to go through the Quay configuration mode to create your config tarball. Do this by adding the following flag to the playbook `-e QUAY_CONFIG=true`
 
 ```
-ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
+ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
 ```
 
 
@@ -64,13 +59,7 @@ ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
 
 
 ```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
-```
-
-+ Deploy quay mirroring worker
-
-```
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> --tags quay-worker --extra-vars '{"_mysql_service":{"default":"mysql", "RedHat-7":"rh-mariadb103-mariadb"}}' --extra-vars '{"_mysql_packages":{"default":[ "mariadb-server", "mariadb-devel", "python2-mysql" ], "RedHat-7":[ "rh-mariadb103-scldevel.x86_64", "rh-mariadb103-syspaths", "MySQL-python" ]}}'
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
 ```
 
 
@@ -81,22 +70,85 @@ Role Variables
 Review the variables stored under group_vars/all to ensure that they align with your desired configurations. Default passwords are included here and should be changed or overwritten at run time.
 
 ```
+QUAY_IMAGE_VERSION: "quay.io/redhat/quay:v3.1.3"
+#QUAY_IMAGE_VERSION: "quay.io/quay/quay:v3.2.0-3"
+
+QUAY_ENDPOINT: quay.homelab.work
+CLAIR_ENDPOINT: "{{ QUAY_ENDPOINT }}"
+
 MYSQL_CONTAINER_NAME: mysql
 MYSQL_DATABASE: enterpriseregistrydb
 MYSQL_PASSWORD: JzxCTamgFBmHRhcGFtoPHFkrx1BH2vwQ
 MYSQL_USER: quayuser
 MYSQL_ROOT_PASSWORD: L36PrivxRB02bqOB9jtZtWiCcMsApOGn
 QUAY_CONFIG_PASSWORD: my-secret-password
+QUAY_ROOT_DIR: /opt/quay
+QUAY_STORAGE_DIR: "{{ QUAY_ROOT_DIR }}/storage"
 QUAY_CONFIG_PORT: 8443
 QUAY_OBJECT_STORAGE: false
 QUAY_HTTP_PORT: 80
 QUAY_HTTPS_PORT: 443
+QUAY_REDIS_DEPLOY: true
 QUAY_REDIS_CONTAINERIZE: true
-QUAY_DATABASE_CONTAINERIZE: true
+QUAY_DATABASE_CONTAINERIZE: false
 
-# Choose one or the other
 QUAY_MYSQL_DEPLOY: true
-QUAY_POSTGRESQL_DEPLOY: false
+QUAY_POSTGRESQL_DEPLOY: true
+
+SATELLITE_REGISTER: false
+
+# Mysql role
+mysql_root_home: /root
+mysql_root_username: root
+mysql_root_password: "{{ MYSQL_ROOT_PASSWORD }}"
+mysql_enabled_on_startup: true
+mysql_databases:
+  - name: "{{ MYSQL_DATABASE }}"
+mysql_users:
+  - name: "{{ MYSQL_USER }}"
+    host: "%"
+    password: "{{ MYSQL_PASSWORD }}"
+    priv: "{{ MYSQL_DATABASE }}.*:ALL"
+
+# Postgres role
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_unix_socket_directories:
+  - /var/run/postgresql
+postgresql_service_state: started
+postgresql_service_enabled: true
+POSTGRES_CONNECTION_STRING: postgresql://quay@localhost:5432/clair?sslmode=disable
+
+
+_mysql_packages:
+  default:
+    - mariadb-server
+    - mariadb-devel
+    - python2-mysql
+  RedHat-7:
+    - rh-mariadb103-scldevel.x86_64
+    - rh-mariadb103-syspaths
+    - MySQL-python
+  CentOS-7:
+    - mariadb-devel
+    - mariadb-server
+    - MySQL-python
+  CentOS:
+    - mysql-devel
+    - mysql-server
+    - python3-PyMySQL
+
+
+_mysql_service:
+  default: mysql
+  Alpine: mariadb
+  Amazon: mariadb
+  Amazon-2018: mysqld
+  Archlinux: mariadb
+  Fedora: mariadb
+  RedHat-7: rh-mariadb103-mariadb
+  RedHat: mysqld
+
 ```
 
 Dependencies
