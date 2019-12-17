@@ -15,6 +15,22 @@
         - "rh-{{ postgresql_version }}-postgresql-server-syspaths"
         - "rh-{{ postgresql_version }}-postgresql-contrib-syspaths"
         - "rh-{{ postgresql_version }}-postgresql-libs"
+      state: present
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    notify: init postgres
+    tags:
+      - database
+
+  - name: Force all notified handlers to run at this point, not waiting for normal sync points
+    meta: flush_handlers
+
+  - name: Update postgres packages
+    yum:
+      name:
+        - "rh-{{ postgresql_version }}-postgresql-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-server-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-contrib-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-libs"
       state: latest
     when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
     notify: restart postgres
