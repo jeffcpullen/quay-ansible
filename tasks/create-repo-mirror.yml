@@ -8,7 +8,7 @@
     USERNAME: "{{ UPSTREAM_REGISTRY_USERNAME }}"
     PASSWORD: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
   vars_files:
-     - files/quay-preload-mirrors.yml
+     - "files/quay-preload-mirrors.yml"
   tasks:
     - name: Create repo
       uri:
