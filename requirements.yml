@@ -1,14 +1,14 @@
-# Install postgresql from galaxy
-- src: geerlingguy.postgresql
-
-# Install redis from galaxy
-- src: geerlingguy.redis
-
-# Install docker from galaxy
-- src: geerlingguy.docker
-
-# Install nfs from galaxy
-- src: geerlingguy.nfs
+# # Install postgresql from galaxy
+# - src: geerlingguy.postgresql
+#
+# # Install redis from galaxy
+# - src: geerlingguy.redis
+#
+# # Install docker from galaxy
+# - src: geerlingguy.docker
+#
+# # Install nfs from galaxy
+# - src: geerlingguy.nfs
 
 # Install mysql from galaxy
 #- src: geerlingguy.mysql
