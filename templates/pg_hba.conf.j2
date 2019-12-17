@@ -9,7 +9,7 @@
 local   all   {{ postgresql_user }}   trust
 local {{ postgresql_quay_db }}    {{ postgresql_quay_user }}    trust
 host  {{ postgresql_quay_db }}    {{ postgresql_quay_user }}    samehost    md5
-host  {{ postgresql_quay_db }}    {{ postgresql_quay_user }}    172.16.0.0/16 md5
+host  {{ postgresql_quay_db }}    {{ postgresql_quay_user }}    all md5
 local all all peer
 host all all 127.0.0.1/32   md5
 host all all ::1/128   md5
