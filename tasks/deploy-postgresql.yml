@@ -30,6 +30,16 @@
     tags:
       - database
 
+  - name: Set postgres listen address to all interfaces
+    lineinfile:
+      path: "/var/opt/rh/rh-{{ postgresql_version }}/lib/pgsql/data/postgresql.conf"
+      regexp: "listen_addresses = "
+      line: "listen_addresses = '*'"
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    notify: restart postgres
+    tags:
+      - database
+
   - name: Force all notified handlers to run at this point, not waiting for normal sync points
     meta: flush_handlers
 
