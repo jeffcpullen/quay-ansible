@@ -27,7 +27,7 @@ clair:
       http:
         # QUAY_ENDPOINT defines the endpoint at which Quay is running.
         # For example: https://myregistry.mycompany.com
-        endpoint: {{ QUAY_ENDPOINT }}/secscan/notify
+        endpoint: http://{{ QUAY_ENDPOINT }}/secscan/notify
         proxy: http://localhost:6063
 
 jwtproxy:
@@ -51,7 +51,7 @@ jwtproxy:
             options:
               # QUAY_ENDPOINT defines the endpoint at which Quay is running.
               # For example: https://myregistry.mycompany.com
-              registry: {{ QUAY_ENDPOINT }}/keys/
+              registry: http://{{ QUAY_ENDPOINT }}/keys/
 
 
   verifier_proxies:
@@ -68,7 +68,7 @@ jwtproxy:
       # CLAIR_ENDPOINT is the endpoint at which this Clair will be accessible. Note that the port
       # specified here must match the listen_addr port a few lines above this.
       # Example: https://myclair.mycompany.com:6060
-      audience: {{ CLAIR_ENDPOINT }}
+      audience: http://{{ CLAIR_ENDPOINT }}
 
       upstream: http://localhost:6062
       key_server:
@@ -76,4 +76,4 @@ jwtproxy:
         options:
           # QUAY_ENDPOINT defines the endpoint at which Quay is running.
           # Example: https://myregistry.mycompany.com
-          registry: {{ QUAY_ENDPOINT }}/keys/
+          registry: http://{{ QUAY_ENDPOINT }}/keys/

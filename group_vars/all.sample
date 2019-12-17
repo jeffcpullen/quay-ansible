@@ -39,13 +39,18 @@ mysql_users:
     priv: "{{ MYSQL_DATABASE }}.*:ALL"
 
 # Postgres role
+postgresql_version: postgresql96
 postgresql_user: postgres
 postgresql_group: postgres
+postgresql_quay_user: quay
+postgresql_quay_user_password: my-secret
+postgresql_quay_db: clair
 postgresql_unix_socket_directories:
   - /var/run/postgresql
 postgresql_service_state: started
 postgresql_service_enabled: true
-POSTGRES_CONNECTION_STRING: postgresql://quay@localhost:5432/clair?sslmode=disable
+POSTGRES_CONNECTION_STRING: "postgresql://{{ postgresql_quay_user }}@{{ QUAY_ENDPOINT }}:5432/clair?sslmode=disable"
+POSTGRES_PORT_5432_TCP_PORT: 5432
 
 
 _mysql_packages:

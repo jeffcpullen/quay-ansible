@@ -1,0 +1,14 @@
+#
+# Ansible managed
+#
+# PostgreSQL Client Authentication Configuration File
+# ===================================================
+#
+# See: https://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html
+
+local all {{ postgresql_user }}   trust
+local {{ postgresql_quay_db }} {{ postgresql_quay_user }} trust
+host {{ postgresql_quay_db }} {{ postgresql_quay_user }} samehost scram-sha-256
+local all all peer
+host all all 127.0.0.1/32   scram-sha-256
+host all all ::1/128   scram-sha-256

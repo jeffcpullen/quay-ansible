@@ -23,7 +23,7 @@
 
   tasks:
   - name: Deploy docker to database container host
-    include_tasks: tasks/setup-docker.yml
+    include_tasks: tasks/.yml
     vars:
       docker_packages:
         - docker
@@ -62,7 +62,7 @@
       - database
 
   - name: Deploy conatinerized mysql
-    include_tasks: tasks/mysql-setup.yml
+    include_tasks: tasks/deploy-mysql.yml
     when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
     tags:
       - database
@@ -89,38 +89,46 @@
     tags:
       - database
 
-  - name: Install postgres pre-reqs
-    yum:
-      name: python-psycopg2
-      state: latest
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+  - name: Configure firewall for PostgreSQL
+    include_tasks: tasks/firewall-setup.yml
+    vars:
+      ports:
+        - "{{ POSTGRES_PORT_5432_TCP_PORT }}/tcp"
+      firewall_zone: trusted
+      when: QUAY_POSTGRESQL_DEPLOY
     tags:
       - database
 
-  - name: Deploy postgres
-    include_role:
-      name: geerlingguy.postgresql
-    vars:
-      __postgresql_version: "9.6"
-      __postgresql_data_dir: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
-      __postgresql_bin_path: "/usr/bin"
-      __postgresql_config_path: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
-      __postgresql_daemon: postgresql
-      postgresql_users:
-        - name: quay
-          password: my-secret-password
-      postgresql_databases:
-        - name: clair
-          owner: quay
-          state: present
-      __postgresql_packages:
-        - rh-postgresql96-postgresql-syspaths
-        - rh-postgresql96-postgresql-server-syspaths
-        - rh-postgresql96-postgresql-contrib-syspaths
-        - rh-postgresql96-postgresql-libs
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+  - name: Deploy PostgreSQL
+    include_tasks: tasks/deploy-postgresql.yml
+    when: QUAY_POSTGRESQL_DEPLOY
     tags:
       - database
+
+  # - name: Deploy postgres
+  #   include_role:
+  #     name: geerlingguy.postgresql
+  #   vars:
+  #     __postgresql_version: "9.6"
+  #     __postgresql_data_dir: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
+  #     __postgresql_bin_path: "/usr/bin"
+  #     __postgresql_config_path: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
+  #     __postgresql_daemon: postgresql
+  #     postgresql_users:
+  #       - name: quay
+  #         password: my-secret-password
+  #     postgresql_databases:
+  #       - name: clair
+  #         owner: quay
+  #         state: present
+  #     __postgresql_packages:
+  #       - rh-postgresql96-postgresql-syspaths
+  #       - rh-postgresql96-postgresql-server-syspaths
+  #       - rh-postgresql96-postgresql-contrib-syspaths
+  #       - rh-postgresql96-postgresql-libs
+  #   when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+  #   tags:
+  #     - database
 
   - name: Test mysql
     include_tasks: tasks/mysql-test.yml
@@ -137,7 +145,7 @@
 
   tasks:
   - name: Deploy docker to redis container host
-    include_tasks: tasks/setup-docker.yml
+    include_tasks: tasks/.yml
     vars:
       docker_packages:
         - docker
@@ -167,7 +175,7 @@
         - redis
 
   - name: Deploy redis container
-    include_tasks: tasks/setup-redis.yml
+    include_tasks: tasks/.yml
     when: QUAY_REDIS_CONTAINERIZE
     tags:
       - redis
@@ -184,7 +192,7 @@
   tasks:
 
   - name: Deploy docker to quay container host
-    include_tasks: tasks/setup-docker.yml
+    include_tasks: tasks/.yml
     vars:
       docker_packages:
         - docker

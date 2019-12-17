@@ -1,0 +1,62 @@
+---
+
+  - name: Install postgres pre-reqs
+    yum:
+      name: python-psycopg2
+      state: latest
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    tags:
+      - database
+
+  - name: Install postgres packages
+    yum:
+      name:
+        - "rh-{{ postgresql_version }}-postgresql-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-server-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-contrib-syspaths"
+        - "rh-{{ postgresql_version }}-postgresql-libs"
+      state: latest
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    notify: restart postgres
+    tags:
+      - database
+
+  - name: Deploy customized pg_hba.conf file
+    template:
+      src: templates/pg_hba.conf.j2
+      dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
+    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+    notify: restart postgres
+    tags:
+      - database
+
+  - name: Force all notified handlers to run at this point, not waiting for normal sync points
+    meta: flush_handlers
+
+  - name: Create a new database with name "acme"
+    postgresql_db:
+      name: "{{ postgresql_quay_db }}"
+      state: present
+
+  - name: "Connect to {{ postgresql_quay_db }} database, create {{ postgresql_quay_user }} user, and grant access to ALL"
+    postgresql_user:
+      db: "{{ postgresql_quay_db }}"
+      name: "{{ postgresql_quay_user }}"
+      password: "{{ postgresql_quay_user_password }}"
+      priv: "ALL"
+      expires: "infinity"
+
+# # This wont work, need to start postgres then link to it to run the command
+#   - name: Start Postgresql container
+#     docker_container:
+#       detach: yes
+#       restart: no
+#       name: "postgres"
+#       privileged: no
+#       published_ports: "5432:5432"
+#       image: "postgres"
+#       command: 'echo "create database clairtest" | psql -h \
+#    "$POSTGRES_PORT_5432_TCP_ADDR" -p  \
+#    "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+#     tags:
+#       - postgres
