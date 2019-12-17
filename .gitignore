@@ -3,3 +3,4 @@ roles/robertdebock.mysql*
 *.retry
 hosts
 group_vars/all
+*.vault
