@@ -12,6 +12,6 @@
 
 - name: restart postgres
   systemd:
-    name: "rh-{{ postgresql96 }}-postgresql.service"
+    name: "rh-{{ postgresql_version }}-postgresql.service"
     state: restarted
     enabled: yes
