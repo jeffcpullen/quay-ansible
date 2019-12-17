@@ -62,7 +62,7 @@ ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
 <<<<<<< HEAD
 ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
 =======
-ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball> 
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
 >>>>>>> 1e8de2f5d1d9c804b61ef1ea2df4a4e625542ac9
 ```
 
@@ -170,3 +170,12 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+
+#### NOTES
+the create repo mirror wants the organization_name+mirror for the robot name
+
+Need a robot creation after repo creation
+
+Need a sync start  
