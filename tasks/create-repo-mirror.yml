@@ -1,0 +1,59 @@
+---
+
+- name: "Sync images from {{images}}"
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    QUAY_AUTH_TOKEN: 'REPLACE_ME_QUAY API TOKEN'
+    USERNAME: 'REPLACE_ME_EXTERNAL REGISTRY USER'
+    PASSWORD: 'REPLACE_ME_EXTERNAL REGISTRY PASSWORD'
+  vars_files:
+     - "{{ images }}"
+  tasks:
+    - name: Create repo
+      uri:
+        url: "https://<REPLACE_ME_QUAY URL>/api/v1/repository"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
+        validate_certs: no
+        body_format: json
+        status_code: 201
+        body:
+          repo_kind: 'image'
+          namespace: "{{ item.image.split('/')[0] }}"
+          visibility: 'public'
+          repository: "{{ item.image.split('/')[1] }}"
+          description: ''
+      with_items: "{{ docker_images }}"
+      register: result
+      ignore_errors: true
+
+    - name: Create mirrors
+      uri:
+        url: "https://<REPLACE_ME_QUAY URL>/api/v1/repository/{{item.image}}/mirror"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
+        validate_certs: no
+        body_format: json
+        status_code: 201
+        body:
+          is_enabled: true
+          external_registry_config:
+            proxy:
+              https_proxy: "http://<REPLACE_ME_PROXY OPTIONAL>"
+              http_proxy: "http://<REPLACE_ME_PROXY OPTIONAL>"
+              no_proxy: "<REPLACE_ME_NO PROXY ADDRESSES OPTIONAL>"
+          external_registry_username: "{{USERNAME}}"
+          location: "{{item.src_registry}}/{{item.image}}"
+          sync_start_date: "{{ ansible_date_time['iso8601'] }}"
+          root_rule:
+            rule_type: "TAG_GLOB_CSV"
+            rule_value:
+              "{{ item.tags }}"
+          external_registry_password: "{{PASSWORD}}"
+          sync_interval: 86400
+          robot_username: "{{ item.image.split('/')[0] }}+mirror"
+      with_items: "{{ docker_images }}"
+
