@@ -1,0 +1,141 @@
+docker_images:
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhel7/etcd
+    tags: ['3.2.22', 'v3.2*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-postgresql
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-memcached
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-app-ui
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-app
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-embedded-ansible
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-openshift-httpd
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: cloudforms46/cfme-httpd-configmap-generator
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhgs3/rhgs-server-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhgs3/rhgs-volmanager-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhgs3/rhgs-gluster-block-prov-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhgs3/rhgs-s3-server-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-amq-6/amq63-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-datagrid-7/datagrid71-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-datagrid-7/datagrid71-client-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-datavirt-6/datavirt63-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-datavirt-6/datavirt63-driver-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-decisionserver-6/decisionserver64-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-processserver-6/processserver64-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-eap-6/eap64-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-eap-7/eap71-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-webserver-3/webserver31-tomcat7-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: jboss-webserver-3/webserver31-tomcat8-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/mongodb-32-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/mysql-57-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/perl-524-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/php-56-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/postgresql-95-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/python-35-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: redhat-sso-7/sso70-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/ruby-24-rhel7
+    tags: ['latest', '*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: redhat-openjdk-18/openjdk18-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: redhat-sso-7/sso71-openshift
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/nodejs-6-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: rhscl/mariadb-101-rhel7
+    tags: ['latest','*']

@@ -8,11 +8,11 @@
     USERNAME: "{{ UPSTREAM_REGISTRY_USERNAME }}"
     PASSWORD: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
   vars_files:
-     - "files/quay-preload-mirrors.yml"
+     - "{{ images }}"
   tasks:
     - name: Create repo
       uri:
-        url: "https://{{ QUAY_ENDPOINT }}/api/v1/repository"
+        url: "http://{{ QUAY_ENDPOINT }}/api/v1/repository"
         method: POST
         headers:
           Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
@@ -31,7 +31,7 @@
 
     - name: Create mirrors
       uri:
-        url: "https://{{ QUAY_ENDPOINT }}/api/v1/repository/{{item.image}}/mirror"
+        url: "http://{{ QUAY_ENDPOINT }}/api/v1/repository/{{item.image}}/mirror"
         method: POST
         headers:
           Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
@@ -42,9 +42,9 @@
           is_enabled: true
           external_registry_config:
             proxy:
-              https_proxy: "http://{{ QUAY_CLAIR_HTTPS_PROXY }}"
-              http_proxy: "http://{{ QUAY_CLAIR_HTTP_PROXY }}"
-              no_proxy: "{{ QUAY_CLAIR_HTTP_NO_PROXY }}"
+              https_proxy: ""
+              http_proxy: ""
+              no_proxy: ""
           external_registry_username: "{{ USERNAME }}"
           location: "{{item.src_registry}}/{{item.image}}"
           sync_start_date: "{{ ansible_date_time['iso8601'] }}"

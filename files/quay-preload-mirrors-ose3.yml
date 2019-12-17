@@ -1,0 +1,305 @@
+docker_images:
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/apb-base
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/apb-tools
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/automation-broker-apb
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/csi-attacher
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/csi-driver-registrar
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/csi-livenessprobe
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/csi-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/grafana
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/local-storage-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/manila-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/mariadb-apb
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/mediawiki
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/mediawiki-apb
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/mysql-apb
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-ansible-service-broker
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-cli
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-cluster-autoscaler
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-cluster-capacity
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-cluster-monitoring-operator
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-console
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-configmap-reloader
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-control-plane
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-deployer
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-descheduler
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-docker-builder
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-docker-registry
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-efs-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-egress-dns-proxy
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-egress-http-proxy
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-egress-router
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-haproxy-router
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-hyperkube
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-hypershift
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-keepalived-ipfailover
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-kube-rbac-proxy
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-kube-state-metrics
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-metrics-server
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-node
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-node-problem-detector
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-operator-lifecycle-manager
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-ovn-kubernetes
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-pod
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-prometheus-config-reloader
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-prometheus-operator
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-recycler
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-service-catalog
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-template-service-broker
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-tests
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-web-console
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/postgresql-apb
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/registry-console
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/snapshot-controller
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/snapshot-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-efs-provisioner
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/metrics-cassandra
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/metrics-hawkular-metrics
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/metrics-hawkular-openshift-agent
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/metrics-heapster
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/metrics-schema-installer
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/oauth-proxy
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-logging-curator5
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-logging-elasticsearch5
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-logging-eventrouter
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-logging-fluentd
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-logging-kibana5
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/prometheus
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/prometheus-alertmanager
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/prometheus-node-exporter
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-2-rhel7
+    tags: ['v3.11.98', 'v3.11*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-agent-maven-35-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-agent-nodejs-8-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-slave-base-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-slave-maven-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-slave-nodejs-rhel7
+    tags: ['latest','*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/jenkins-slave-base-rhel7
+    tags: ['v3.11.98', 'v3.11.*']
+  - src_registry: registry.redhat.io
+    trgt_registry: "{{ QUAY_ENDPOINT }}"
+    image: openshift3/ose-deployer
+    tags: ['v3.11.98', 'v3.11.*']
