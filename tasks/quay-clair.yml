@@ -25,6 +25,7 @@
       image: "quay.io/redhat/clair-jwt:v3.1.3"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
+        - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z"
     when: QUAY_CLAIR_HTTP_PROXY is not defined and QUAY_CLAIR_HTTPS_PROXY is not defined
     tags:
       - postgres
