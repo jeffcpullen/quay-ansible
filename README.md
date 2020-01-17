@@ -1,66 +1,80 @@
 #  quay-ansible
 
+Quay Ansible
+=========
 
-## Tags:
+This role is intended to install Quay and its dependencies to one or more systems using the basic installation method.
 
-* `register` - 
+Requirements
+------------
 
+Before running:
 
-* `database` - 
+1) You'll need to pull down the roles that this playbook depends on. You may need to define an HTTP proxy for some environments.
 
+ ```
+ ansible-galaxy install --roles-path ./roles/ -r requirements.yml
+ ```
 
-* `redis` - 
+2) Get the quay shared secret from https://access.redhat.com/solutions/3533201.
 
+     If Docker is already installed on the quay host run the docker login string provided in that solution
 
-* `quay` - 
+     If Docker isn't installed yet you can add the config.json to the system in advance of Docker (which will be installed as part of this playbook)
 
+     ```
+     mkdir -p ~/.docker
+     vi ~/.docker/config.json
+     <paste in solution config.json>
+     ```
 
-* `quay-config` - 
+3) Requires Ansible 2.7+ on the host executing these playbooks
 
-
-* `quay-worker` - 
-
-
-* `quay-clair` - 
-
-
-* `v3.11.98` - 
-
-
-* `v3.11*` - 
-
-
-* `latest` - 
-
-
-* `*` - 
+4) You should have sufficient storage allocated to the node to hold the downloaded images. This directory is defined in the group_vars/all as the QUAY_STORAGE_DIR. Default is /opt/quay/storage.
 
 
-* `v3.11.*` - 
+Usage
+-----
 
 
-* `3.2.22` - 
+ + To register a system to satellite with the necessary repositories update SATELLITE_REGISTER variable via group_vars/all or by defining it as an extra variable
+
+ `-e SATELLITE_REGISTER=true`
+
+ + If you aren't using the satellite registration plays ensure the systems have the following repositories available
+
+ ```
+       - rhel-7-server-rpms
+       - rhel-7-server-extras-rpms
+       - rhel-server-rhscl-7-rpms (if not deploying containerized)
+```
+
++ If this is the first time that you've installed Quay, you will need to go through the Quay configuration mode to create your config tarball. Do this by adding the following flag to the playbook `-e QUAY_CONFIG=true`
+
+```
+ansible-playbook -i hosts deploy.yml -b --skip-tags register -e QUAY_CONFIG=true
+```
 
 
-* `v3.2*` - 
++ If you've already run the config mode, or have a config tarball you can run the full deployment by referencing a configuration tarball. After running through the Quay config WebUI, copy the downloaded tarball to the ansible host and reference it with `-e QUAY_CONFIG_TAR=<path to tarball>`
 
 
-* `docker` - 
+```
+ansible-playbook deploy.yml -i hosts -b -e QUAY_CONFIG_TAR=<path to quay config tarball>
+```
 
 
-* `postgres` - 
 
+Role Variables
+--------------
 
-* `deploy-config` - 
+Review the variables stored under group_vars/all to ensure that they align with your desired configurations. Default passwords are included here and should be changed or overwritten at run time.
 
 ## Variables:
 
 ### Playbook:
 | Variable Name | Default | Description |
 | ------------- |:-------:|:-----------:|
-| `MYSQL_CONTAINER_NAME`| `'mysql'` | Name to apply to mysql container |
-| `postgresql_version`| `postgresql96` | The version of postgresql to deploy |
-| `POSTGRES_CONNECTION_STRING`| `"host={{ QUAY_ENDPOINT }} sslmode=disable dbname={{ postgresql_quay_db }} user={{ postgresql_quay_user }} password={{ postgresql_quay_user_password }} statement_timeout=60000"` | The connection string built with other variables |
 | `QUAY_IMAGE_VERSION`| `"quay.io/redhat/quay:v3.1.3"` | The source and tag of Quay container |
 | `docker_login_quay`| `"undefined"` | This optional value is pulled from the Red Hat solution to access quay images and the value is the entire login command such as: docker login -u='REDHAT_QUAY_USER' -p='LONG_UUID_STRING' quay.io" docker_login_quay: |
 | `docker_login_redhat`| `"docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}' https://registry.redhat.io"` | Command to access the Red Hat registry, built with UPSTREAM_REGISTRY_USERNAME and UPSTREAM_REGISTRY_PASSWORD variables |
@@ -107,4 +121,3 @@
 
 
 Documentation generated using: [Ansible-autodoc](https://github.com/AndresBott/ansible-autodoc)
-
