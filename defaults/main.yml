@@ -1,19 +1,119 @@
 ---
 # defaults file for quay-ansible
 
-# NFS based defaults
-#nfs_rpcbind_state: started
-#nfs_rpcbind_enabled: true
+# @var docker_login_quay: "undefined" # This optional value is pulled from the Red Hat solution to access quay images and the value is the entire login command such as: docker login -u='REDHAT_QUAY_USER' -p='LONG_UUID_STRING' quay.io"
+# docker_login_quay:
 
-# Docker defaults
-#docker_service_state: started
-#docker_service_enabled: true
-#docker_restart_handler_state: restarted
-#docker_package: "docker"
-#docker_package_state: present
+# @var docker_login_redhat: "docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}' https://registry.redhat.io" # Command to access the Red Hat registry, built with UPSTREAM_REGISTRY_USERNAME and UPSTREAM_REGISTRY_PASSWORD variables
+docker_login_redhat: docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}
 
-# Redis defaults
-#redis_port: 6379
-#redis_bind_interface: 127.0.0.1
+### Generic Database ###
+# @todo containerized database testing
+# @var QUAY_DATABASE_CONTAINERIZE: false # Boolean if databases should be deployed as RPMs or Containers
+QUAY_DATABASE_CONTAINERIZE: false
 
-QUAY_CONFIG_TAR=YouForgotToDefineMe
+### MySQL ###
+# @var QUAY_MYSQL_DEPLOY: true # Boolean on if mysql should be deployed for Quay
+QUAY_MYSQL_DEPLOY: true
+
+# @var MYSQL_DATABASE: "enterpriseregistrydb" # The database name to be created / used for quay
+MYSQL_DATABASE: enterpriseregistrydb
+
+# @var MYSQL_PASSWORD: "changeme" # The mysql database password to be set/used
+MYSQL_PASSWORD: changeme
+
+# @var MYSQL_ROOT_PASSWORD: "changeme" # The mysql root password
+MYSQL_ROOT_PASSWORD: changeme
+
+# @var MYSQL_USER: "quayuser" # The mysql database user
+MYSQL_USER: quayuser
+
+### Postgres ###
+# @var QUAY_POSTGRESQL_DEPLOY: true # Boolean on if Postgresql should be deployed for Clair / Quay
+QUAY_POSTGRESQL_DEPLOY: true
+
+# @var POSTGRES_PORT_5432_TCP_PORT: 5432 # Port to access postgres on
+POSTGRES_PORT_5432_TCP_PORT: 5432
+
+# @todo this is actually being used for clair, need to test using clair and quay on postgres
+# @var postgresql_quay_db: clair  # The postgres clair database
+postgresql_quay_db: clair
+
+# @var postgresql_quay_user: quay # The postgres clair database user
+postgresql_quay_user: quay
+
+# @var postgresql_quay_user_password: changeme # The postgres quay user password
+postgresql_quay_user_password: changeme
+
+# @var postgresql_user: postgres # The postgres admin user
+postgresql_user: postgres
+
+### Quay ###
+# @var QUAY_ENDPOINT: "quay-server.example.com" # The FQDN for your quay system
+QUAY_ENDPOINT: quay-server.example.com
+
+# @var QUAY_CONFIG_PASSWORD: 'changeme' # The password for the quay config UI
+QUAY_CONFIG_PASSWORD: changeme
+
+# @var QUAY_CONFIG_PORT: '8443' # The port to access the quay configuration pod
+QUAY_CONFIG_PORT: 8443
+
+# @var QUAY_CONFIG_TAR: 'undefined' # After running the quay configuration download the tarball and set the path on this variable
+# QUAY_CONFIG_TAR:  "PATH_TO_CONFIG_TAR_FILE"
+
+# @var QUAY_HTTP_PORT: '80' # The port to access Quay if TLS is not enabled
+QUAY_HTTP_PORT: 80
+
+# @var QUAY_HTTPS_PORT: '443' # The port to access Quay when TLS is enabled
+QUAY_HTTPS_PORT: 443
+
+### Clair ###
+# @var CLAIR_ENDPOINT: '{{ QUAY_ENDPOINT }}' # The FQDN for your clair server, defaults to same as quay
+CLAIR_ENDPOINT: "{{ QUAY_ENDPOINT }}"
+
+# @var CLAIR_ENCRYPT: true # Boolean on if Clair should run on TLS
+CLAIR_ENCRYPT: true
+
+# This isn't currently used but may be used in the future
+# @var quay_organization_ca_cert: '/etc/ipa/ca.crt' # ONLY USED FOR AUTOMATED TESTING Path to your organizations CA chain
+#quay_organization_ca_cert: '/etc/ipa/ca.crt'
+
+# @var QUAY_CLAIR_HTTP_NO_PROXY: 'undefined' # list of systems not to proxy (standard NO_PROXY syntax)
+# QUAY_CLAIR_HTTP_NO_PROXY: "{{ QUAY_ENDPOINT }}"
+
+# @var QUAY_CLAIR_HTTP_PROXY: 'undefined' # The address and port to http proxy server
+# QUAY_CLAIR_HTTP_PROXY: http://proxy.example.com:8080
+
+# @var QUAY_CLAIR_HTTPS_PROXY: 'undefined' # The address and port to https proxy server
+# QUAY_CLAIR_HTTPS_PROXY: http://proxy.example.com:8080
+
+### Redis ###
+# @var QUAY_REDIS_DEPLOY: 'true' # Boolean to decide if Redis should be deployed
+QUAY_REDIS_DEPLOY: true
+
+# @var quay_redis_password: 'lkajsdlfkjwoeiruewoijdlkf' # The password to set on deployed Redis
+quay_redis_password: lkajsdlfkjwoeiruewoijdlkf
+
+# @var QUAY_REDIS_CONTAINERIZE: 'true' # If deployed Redis should be containerized
+QUAY_REDIS_CONTAINERIZE: true
+
+# @var QUAY_ROOT_DIR: '/opt/quay' # The directory where quay and clair configurations will be placed
+QUAY_ROOT_DIR: /opt/quay
+
+# @var QUAY_STORAGE_DIR: 'unset' # Optional extra directory to create that can hold container images
+# QUAY_STORAGE_DIR: "{{ QUAY_ROOT_DIR }}/storage"
+
+### Create Repo playbook ###
+# @var UPSTREAM_REGISTRY_PASSWORD: 'jdoe' # Username for the add repo playbook - should be replaced soon
+# @var UPSTREAM_REGISTRY_USERNAME: 'password' # Passowrd for the add repo playbook - should be replaced soon
+
+### Deprecated ###
+# @var QUAY_AUTH_TOKEN: 'undefined' # This is used for the api calls to populate the registry post install
+# QUAY_AUTH_TOKEN: 'undefined'
+
+# @var SATELLITE_REGISTER: false # This enables the satellite registration portion of the role that will be removed soon
+SATELLITE_REGISTER: false
+
+# @var quay_ansible_satellite_fqdn: 'satellite.example.com' # DEPRECATED Satellite FQDN
+# @var quay_ansible_satellite_key: 'example-key' # DEPRECATED Satellite key
+# @var quay_ansible_satellite_org: 'example-org'# DEPRECATED Satellite org

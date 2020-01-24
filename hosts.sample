@@ -1,19 +1,19 @@
-[database]
+[quay-database]
 quay.homelab.work
 
-[redis]
+[quay-redis]
 quay.homelab.work
 
-[nfs]
+[quay-nfs]
 quay.homelab.work
 
 [quay]
 quay.homelab.work
 
 [quay-systems:children]
-database
-redis
-nfs
+quay-database
+quay-redis
+quay-nfs
 quay
 
 [quay-systems:vars]

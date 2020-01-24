@@ -1,6 +1,7 @@
 ---
-- hosts: all
-
+- hosts: quaysystems
+  vars_files:
+    - vars/main.yml
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
@@ -10,11 +11,13 @@
   - name: Register system to satellite and repos
     include_role:
       name: register-system
-    when: SATELLITE_REGISTER
+    when: SATELLITE_REGISTER == True and SATELLITE_REGISTER is defined
     tags:
       - register
 
-- hosts: database
+- hosts: quaydatabase
+  vars_files:
+    - vars/main.yml
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
@@ -60,6 +63,20 @@
       when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
     tags:
       - database
+
+  - name: Login to quay.io
+    docker_login:
+      username: "{{ QUAY_IO_USERNAME }}"
+      password: "{{ QUAY_IO_PASSWORD }}"
+      registry: "{{ QUAY_IO_REGISTRY_URL }}"
+    when: QUAY_IO_USERNAME is defined
+
+  - name: Login to Red Hat Registry
+    docker_login:
+      username: "{{ UPSTREAM_REGISTRY_USERNAME }}"
+      password: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
+      registry: "{{ UPSTREAM_REGISTRY_URL }}"
+    when: UPSTREAM_REGISTRY_USERNAME is defined
 
   - name: Deploy conatinerized mysql
     include_tasks: tasks/deploy-mysql.yml
@@ -136,7 +153,9 @@
     tags:
       - database
 
-- hosts: redis
+- hosts: quayredis
+  vars_files:
+    - vars/main.yml
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml
@@ -181,6 +200,8 @@
       - redis
 
 - hosts: quay
+  vars_files:
+    - vars/main.yml
   handlers:
     - name: Include all handlers
       import_tasks: handlers/main.yml

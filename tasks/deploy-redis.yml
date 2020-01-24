@@ -20,7 +20,9 @@
       privileged: yes
       published_ports: 6379:6379
       volumes: /var/lib/redis:/var/lib/redis/data:Z
-      image: "registry.access.redhat.com/rhscl/redis-32-rhel7"
+      image: "registry.redhat.io/rhscl/redis-5-rhel7"
+      env:
+        REDIS_PASSWORD: "{{ quay_redis_password }}"
     tags:
       - quay
       - quay-config

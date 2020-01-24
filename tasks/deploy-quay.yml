@@ -19,7 +19,7 @@
     file:
       state: directory
       path: "{{ QUAY_STORAGE_DIR }}"
-    when: not QUAY_OBJECT_STORAGE
+    when: not QUAY_OBJECT_STORAGE and QUAY_OBJECT_STORAGE is defined
     tags:
       - quay
 
