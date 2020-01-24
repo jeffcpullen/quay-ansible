@@ -5,7 +5,25 @@
 # docker_login_quay:
 
 # @var docker_login_redhat: "docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}' https://registry.redhat.io" # Command to access the Red Hat registry, built with UPSTREAM_REGISTRY_USERNAME and UPSTREAM_REGISTRY_PASSWORD variables
-docker_login_redhat: docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}
+# docker_login_redhat: docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}
+
+# @var QUAY_IO_REGISTRY_URL: "quay.io" # The registry where the quay image is hosted
+QUAY_IO_REGISTRY_URL: "quay.io"
+
+# @var QUAY_IO_USERNAME: "pull_from_rh_solution" # Connection details provided in the Red Hat solution above
+QUAY_IO_USERNAME: "not_defined"
+
+# @var QUAY_IO_PASSWORD: "pull_from_rh_solution" # Connection details provided in the Red Hat solution above
+QUAY_IO_PASSWORD: "not_defined"
+
+# @var UPSTREAM_REGISTRY_URL: "https://registry.redhat.io" # Url to Red Hat Registry
+UPSTREAM_REGISTRY_URL: https://registry.redhat.io
+
+# @var UPSTREAM_REGISTRY_USERNAME: "numbers|username" # Credentials from Red Hat Containers page
+UPSTREAM_REGISTRY_USERNAME: 'not_defined'
+
+# @var UPSTREAM_REGISTRY_PASSWORD: "vault encrypted string" # Credentials from Red Hat Containers page (suggest encrypting with ansible vault)
+UPSTREAM_REGISTRY_PASSWORD: 'not_defined'
 
 ### Generic Database ###
 # @todo containerized database testing
@@ -70,6 +88,13 @@ QUAY_HTTPS_PORT: 443
 ### Clair ###
 # @var CLAIR_ENDPOINT: '{{ QUAY_ENDPOINT }}' # The FQDN for your clair server, defaults to same as quay
 CLAIR_ENDPOINT: "{{ QUAY_ENDPOINT }}"
+
+# @var CLAIR_ENCRYPT: true # Boolean on if Clair should run on TLS
+CLAIR_ENCRYPT: true
+
+# This isn't currently used but may be used in the future
+# @var quay_organization_ca_cert: '/etc/ipa/ca.crt' # ONLY USED FOR AUTOMATED TESTING Path to your organizations CA chain
+#quay_organization_ca_cert: '/etc/ipa/ca.crt'
 
 # @var QUAY_CLAIR_HTTP_NO_PROXY: 'undefined' # list of systems not to proxy (standard NO_PROXY syntax)
 # QUAY_CLAIR_HTTP_NO_PROXY: "{{ QUAY_ENDPOINT }}"

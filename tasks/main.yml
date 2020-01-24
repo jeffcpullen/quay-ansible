@@ -1,2 +1,219 @@
 ---
 # tasks file for quay-ansible
+
+- name: Register system to satellite and repos
+  include_role:
+    name: register-system
+  when: SATELLITE_REGISTER == True and SATELLITE_REGISTER is defined
+  tags:
+    - register
+
+- name: Deploy docker to database container host
+  include_tasks: tasks/deploy-docker.yml
+  vars:
+    docker_packages:
+      - docker
+      - python-docker-py
+      - MySQL-python
+  when: QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Deploy python components for Ansible to database container host
+  yum:
+    name: MySQL-python
+    state: latest
+  when: not QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Configure firewall
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - 3306/tcp
+    firewall_zone: public
+    when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Configure firewall
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - 3306/tcp
+    firewall_zone: trusted
+    when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Login to quay.io
+  docker_login:
+    username: "{{ QUAY_IO_USERNAME }}"
+    password: "{{ QUAY_IO_PASSWORD }}"
+    registry: "{{ QUAY_IO_REGISTRY_URL }}"
+  when: QUAY_IO_USERNAME is defined
+
+- name: Login to Red Hat Registry
+  docker_login:
+    username: "{{ UPSTREAM_REGISTRY_USERNAME }}"
+    password: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
+    registry: "{{ UPSTREAM_REGISTRY_URL }}"
+  when: UPSTREAM_REGISTRY_USERNAME is defined
+
+- name: Deploy conatinerized mysql
+  include_tasks: tasks/deploy-mysql.yml
+  when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Deploy mysql
+  include_role:
+    name: robertdebock.mysql
+  vars:
+    _mysql_service:
+      default:
+        mysql
+      RedHat-7:
+        rh-mariadb103-mariadb
+    _mysql_packages:
+      default:
+        - mariadb-server
+        - mariadb-devel
+        - python2-mysql
+      RedHat-7:
+        - rh-mariadb103-scldevel.x86_64
+        - rh-mariadb103-syspaths
+        - MySQL-python
+  when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+  tags:
+    - database
+
+- name: Configure firewall for PostgreSQL
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - "{{ POSTGRES_PORT_5432_TCP_PORT }}/tcp"
+    firewall_zone: trusted
+    when: QUAY_POSTGRESQL_DEPLOY
+  tags:
+    - database
+
+- name: Deploy PostgreSQL
+  include_tasks: tasks/deploy-postgresql.yml
+  when: QUAY_POSTGRESQL_DEPLOY
+  tags:
+    - database
+
+# - name: Deploy postgres
+#   include_role:
+#     name: geerlingguy.postgresql
+#   vars:
+#     __postgresql_version: "9.6"
+#     __postgresql_data_dir: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
+#     __postgresql_bin_path: "/usr/bin"
+#     __postgresql_config_path: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
+#     __postgresql_daemon: postgresql
+#     postgresql_users:
+#       - name: quay
+#         password: my-secret-password
+#     postgresql_databases:
+#       - name: clair
+#         owner: quay
+#         state: present
+#     __postgresql_packages:
+#       - rh-postgresql96-postgresql-syspaths
+#       - rh-postgresql96-postgresql-server-syspaths
+#       - rh-postgresql96-postgresql-contrib-syspaths
+#       - rh-postgresql96-postgresql-libs
+#   when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
+#   tags:
+#     - database
+
+- name: Test mysql
+  include_tasks: tasks/mysql-test.yml
+  when: QUAY_MYSQL_DEPLOY
+  tags:
+    - database
+
+- name: Deploy docker to redis container host
+  include_tasks: tasks/deploy-docker.yml
+  vars:
+    docker_packages:
+      - docker
+      - python-docker-py
+  when: QUAY_REDIS_CONTAINERIZE
+  tags:
+    - redis
+
+- name: Configure firewall
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - 6379/tcp
+    firewall_zone: public
+    when: QUAY_REDIS_DEPLOY and not QUAY_REDIS_CONTAINERIZE
+    tags:
+      - redis
+
+- name: Configure firewall
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - 6379/tcp
+    firewall_zone: trusted
+    when: QUAY_REDIS_DEPLOY and QUAY_REDIS_CONTAINERIZE
+    tags:
+      - redis
+
+- name: Deploy redis container
+  include_tasks: tasks/deploy-redis.yml
+  when: QUAY_REDIS_CONTAINERIZE
+  tags:
+    - redis
+
+- name: Deploy docker to quay container host
+  include_tasks: tasks/deploy-docker.yml
+  vars:
+    docker_packages:
+      - docker
+      - python-docker-py
+  tags:
+    - quay
+    - quay-config
+    - quay-worker
+
+- name: Configure firewall
+  include_tasks: tasks/firewall-setup.yml
+  vars:
+    ports:
+      - 443/tcp
+      - 80/tcp
+      - 8443/tcp
+    firewall_zone: public
+  tags:
+    - quay
+    - quay-config
+    - quay-worker
+
+- name: Deploy quay config container
+  include_tasks: tasks/quay-config-mode.yml
+  when: QUAY_CONFIG is defined and QUAY_CONFIG
+  tags:
+    - quay-config
+
+- name: Deploy quay container
+  include_tasks: tasks/deploy-quay.yml
+  when: QUAY_CONFIG is undefined or not QUAY_CONFIG
+  tags:
+    - quay
+
+- name: Deploy quay mirror sync container
+  include_tasks: tasks/quay-mirror.yml
+  tags:
+    - quay-worker
+
+- name: Deploy clair
+  include_tasks: tasks/quay-clair.yml
+  tags:
+    - quay-clair

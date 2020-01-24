@@ -13,6 +13,35 @@
       src: templates/clair-config.j2
       dest: "{{ QUAY_ROOT_DIR }}/clair/config.yaml"
 
+  - name: Copy the quay certificate into clair
+    copy:
+      remote_src: yes
+      src: "{{ QUAY_ROOT_DIR }}/config/ssl.cert"
+      dest: "{{ QUAY_ROOT_DIR }}/clair/clair.crt"
+    when: CLAIR_ENCRYPT
+
+  - name: Copy the quay key into clair
+    copy:
+      remote_src: yes
+      src: "{{ QUAY_ROOT_DIR }}/config/ssl.key"
+      dest: "{{ QUAY_ROOT_DIR }}/clair/clair.key"
+    when: CLAIR_ENCRYPT
+
+  - name: "Check that ca certificate exists on quay host at {{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt"
+    stat:
+      path: "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt"
+    register: _ca_cert_exist
+
+  - name: Fail if CA certificate doesn't exist
+    fail:
+      msg: "CA certificate not on host at {{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt"
+    when: not _ca_cert_exist.stat.isreg
+
+# - name: Create docker systemd path (https://github.com/mhutter/ansible-docker-systemd-service)
+
+# Launch docker command
+# docker run -d --name clair --restart unless-stopped -p 6000:6000 -p 6060:6060 -p 6061:6061 -v "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z" -v "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z,ro" quay.io/redhat/clair-jwt:v3.1.3
+
   - name: Start clair container
     docker_container:
       detach: yes
@@ -25,7 +54,7 @@
       image: "quay.io/redhat/clair-jwt:v3.1.3"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
-        - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z"
+        - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z,ro"
     when: QUAY_CLAIR_HTTP_PROXY is not defined and QUAY_CLAIR_HTTPS_PROXY is not defined
     tags:
       - postgres
@@ -46,6 +75,7 @@
       image: "quay.io/redhat/clair-jwt:v3.1.3"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
+        - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z"
     when: QUAY_CLAIR_HTTP_PROXY is defined or QUAY_CLAIR_HTTPS_PROXY is defined
     tags:
       - postgres

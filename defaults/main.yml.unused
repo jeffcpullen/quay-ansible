@@ -71,6 +71,13 @@ QUAY_HTTPS_PORT: 443
 # @var CLAIR_ENDPOINT: '{{ QUAY_ENDPOINT }}' # The FQDN for your clair server, defaults to same as quay
 CLAIR_ENDPOINT: "{{ QUAY_ENDPOINT }}"
 
+# @var CLAIR_ENCRYPT: true # Boolean on if Clair should run on TLS
+CLAIR_ENCRYPT: true
+
+# This isn't currently used but may be used in the future
+# @var quay_organization_ca_cert: '/etc/ipa/ca.crt' # ONLY USED FOR AUTOMATED TESTING Path to your organizations CA chain
+#quay_organization_ca_cert: '/etc/ipa/ca.crt'
+
 # @var QUAY_CLAIR_HTTP_NO_PROXY: 'undefined' # list of systems not to proxy (standard NO_PROXY syntax)
 # QUAY_CLAIR_HTTP_NO_PROXY: "{{ QUAY_ENDPOINT }}"
 
