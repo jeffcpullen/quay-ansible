@@ -12,9 +12,7 @@ POSTGRES_CONNECTION_STRING: "host={{ QUAY_ENDPOINT }} sslmode=disable dbname={{ 
 
 # @var QUAY_IMAGE_VERSION: "quay.io/redhat/quay:v3.1.3" # The source and tag of Quay container
 
-
-### Not sure if these are being referenced or not ###
-_mysql_packages:
+_quay_mysql_packages:
   default:
     - mariadb-server
     - mariadb-devel
@@ -32,7 +30,7 @@ _mysql_packages:
     - mysql-server
     - python3-PyMySQL
 
-_mysql_service:
+_quay_mysql_service:
   default: mysql
   Alpine: mariadb
   Amazon: mariadb
@@ -41,6 +39,7 @@ _mysql_service:
   Fedora: mariadb
   RedHat-7: rh-mariadb103-mariadb
   RedHat: mysqld
+
 
 ### Not currently used ###
 # postgresql_unix_socket_directories:
