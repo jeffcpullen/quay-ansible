@@ -43,6 +43,7 @@
         - "{{ QUAY_HTTP_PORT }}:8080"
         - "{{ QUAY_HTTPS_PORT }}:8443"
       image: "{{ QUAY_IMAGE_VERSION }}"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
         - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"

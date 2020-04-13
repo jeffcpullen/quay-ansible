@@ -52,6 +52,7 @@
         - "6060:6060"
         - "6061:6061"
       image: "quay.io/redhat/clair-jwt:v3.1.3"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
         - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z,ro"
@@ -73,6 +74,7 @@
         - "6060:6060"
         - "6061:6061"
       image: "quay.io/redhat/clair-jwt:v3.1.3"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/clair:/clair/config:Z"
         - "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs/ca.crt:/etc/pki/ca-trust/source/anchors/ca.crt:Z"
