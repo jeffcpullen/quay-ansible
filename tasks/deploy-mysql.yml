@@ -33,6 +33,7 @@
       published_ports: 3306:3306
       volumes: /var/lib/mysql:/var/lib/mysql/data:Z
       image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
     tags:
       - quay
       - quay-config

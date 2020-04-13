@@ -21,6 +21,7 @@
       published_ports: 6379:6379
       volumes: /var/lib/redis:/var/lib/redis/data:Z
       image: "registry.redhat.io/rhscl/redis-5-rhel7"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
       env:
         REDIS_PASSWORD: "{{ quay_redis_password }}"
     tags:

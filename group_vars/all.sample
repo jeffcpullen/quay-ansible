@@ -25,6 +25,9 @@ UPSTREAM_REGISTRY_USERNAME: 'not_defined'
 # @var UPSTREAM_REGISTRY_PASSWORD: "vault encrypted string" # Credentials from Red Hat Containers page (suggest encrypting with ansible vault)
 UPSTREAM_REGISTRY_PASSWORD: 'not_defined'
 
+# @var CONTAINER_RESTART_POLICY: "unless-stopped" # Container start policy
+CONTAINER_RESTART_POLICY: unless-stopped
+
 ### Generic Database ###
 # @todo containerized database testing
 # @var QUAY_DATABASE_CONTAINERIZE: false # Boolean if databases should be deployed as RPMs or Containers

@@ -7,6 +7,7 @@
       name: "mirroring-worker"
       privileged: no
       image: "{{ QUAY_IMAGE_VERSION }}"
+      restart_policy: "{{ CONTAINER_RESTART_POLICY }}"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
       command: "repomirror"
