@@ -8,10 +8,10 @@
   systemd:
     name: docker
     state: restarted
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: restart postgres
   systemd:
     name: "rh-{{ postgresql_version }}-postgresql.service"
     state: restarted
-    enabled: yes
+    enabled: true

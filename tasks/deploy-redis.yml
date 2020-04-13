@@ -14,10 +14,10 @@
 
   - name: Deploy Redis container
     docker_container:
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "redis"
-      privileged: yes
+       privileged: true
       published_ports: 6379:6379
       volumes: /var/lib/redis:/var/lib/redis/data:Z
       image: "registry.redhat.io/rhscl/redis-5-rhel7"

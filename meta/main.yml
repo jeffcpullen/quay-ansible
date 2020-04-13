@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: Jeff Pullen
   description: Ansible deployer for Quay and Clair

@@ -15,14 +15,14 @@
 
   - name: Copy the quay certificate into clair
     copy:
-      remote_src: yes
+      remote_src: true
       src: "{{ QUAY_ROOT_DIR }}/config/ssl.cert"
       dest: "{{ QUAY_ROOT_DIR }}/clair/clair.crt"
     when: CLAIR_ENCRYPT
 
   - name: Copy the quay key into clair
     copy:
-      remote_src: yes
+      remote_src: true
       src: "{{ QUAY_ROOT_DIR }}/config/ssl.key"
       dest: "{{ QUAY_ROOT_DIR }}/clair/clair.key"
     when: CLAIR_ENCRYPT
@@ -44,8 +44,8 @@
 
   - name: Start clair container
     docker_container:
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "clair"
       published_ports:
         - "6000:6000"
@@ -61,8 +61,8 @@
 
   - name: Start clair container
     docker_container:
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "clair"
       env:
         HTTP_PROXY: "{{ QUAY_CLAIR_HTTP_PROXY }}"

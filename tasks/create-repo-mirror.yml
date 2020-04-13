@@ -2,7 +2,7 @@
 
 - name: "Sync images from {{images}}"
   hosts: quay
-  gather_facts: yes
+  gather_facts: true
   vars:
     QUAY_AUTH_TOKEN: "{{ QUAY_AUTH_TOKEN }}"
     USERNAME: "{{ UPSTREAM_REGISTRY_USERNAME }}"
@@ -16,7 +16,7 @@
         method: POST
         headers:
           Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
-        validate_certs: no
+        validate_certs: false
         body_format: json
         status_code: 201
         body:
@@ -35,7 +35,7 @@
         method: POST
         headers:
           Authorization: "Bearer {{ QUAY_AUTH_TOKEN }}"
-        validate_certs: no
+        validate_certs: false
         body_format: json
         status_code: 201
         body:

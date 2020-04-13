@@ -1,3 +1,4 @@
+---
 # # Install postgresql from galaxy
 # - src: geerlingguy.postgresql
 #

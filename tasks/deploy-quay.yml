@@ -27,17 +27,17 @@
     unarchive:
       src: "{{ QUAY_CONFIG_TAR }}"
       dest: "{{ QUAY_ROOT_DIR }}/config/"
-      copy: yes
+      copy: true
     tags:
       - quay
       - deploy-config
 
   - name: Start quay
     docker_container:
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "quay"
-      privileged: yes
+       privileged: true
       sysctls: { net.core.somaxconn: 4096 }
       published_ports:
         - "{{ QUAY_HTTP_PORT }}:8080"

@@ -17,7 +17,7 @@
     systemd:
       name: firewalld
       state: started
-      enabled: yes
+      enabled: true
     notify:
       - restart docker
     tags:
@@ -31,7 +31,7 @@
     firewalld:
       zone: trusted
       interface: docker0
-      permanent: yes
+      permanent: true
       state: enabled
     notify:
       - reload-firewall
@@ -47,7 +47,7 @@
     firewalld:
       port: "{{ item }}"
       zone: "{{ firewall_zone }}"
-      permanent: yes
+      permanent: true
       state: enabled
     with_items: "{{ ports }}"
     notify:

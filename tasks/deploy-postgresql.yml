@@ -67,10 +67,10 @@
 # # This wont work, need to start postgres then link to it to run the command
 #   - name: Start Postgresql container
 #     docker_container:
-#       detach: yes
+#        detach: true
 #       restart: no
 #       name: "postgres"
-#       privileged: no
+#        privileged: false
 #       published_ports: "5432:5432"
 #       image: "postgres"
 #       command: 'echo "create database clairtest" | psql -h \

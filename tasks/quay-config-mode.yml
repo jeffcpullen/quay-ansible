@@ -1,11 +1,13 @@
 ---
 
+  # Note: this does not use the container restart policy option
+  #       because config mode should only happen once
   - name: Start quay in config mode
     docker_container:
-      detach: yes
-      restart: no
+       detach: true
+      restart: false
       name: "quay-config"
-      privileged: yes
+       privileged: true
       published_ports: "{{ QUAY_CONFIG_PORT }}:8443"
       image: "{{ QUAY_IMAGE_VERSION }}"
       command: "config {{ QUAY_CONFIG_PASSWORD }}"

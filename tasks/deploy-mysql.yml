@@ -26,10 +26,10 @@
   - name: Deploy mysql container
     docker_container:
       env_file: "~/mysql-env-file"
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "{{ MYSQL_CONTAINER_NAME }}"
-      privileged: yes
+       privileged: true
       published_ports: 3306:3306
       volumes: /var/lib/mysql:/var/lib/mysql/data:Z
       image: "registry.access.redhat.com/rhscl/mysql-57-rhel7"
