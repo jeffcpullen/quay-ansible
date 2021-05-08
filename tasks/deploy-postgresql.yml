@@ -28,6 +28,10 @@
     volume:
       - "/opt/quay/postgres-quay:/var/lib/pgsql/data:Z"
 
+- name: Wait for postgres to start
+  ansible.builtin.pause:
+    seconds: 6
+
 - name: Enable pg_trgm
   command: >
     podman exec -it postgresql-quay /bin/bash -c 'echo "CREATE EXTENSION IF NOT EXISTS pg_trgm" | psql -d quay -U postgres'
