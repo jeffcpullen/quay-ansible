@@ -1,0 +1,14 @@
+---
+
+- name: enable fips mode
+  command: /usr/bin/fips-mode-setup --enable
+
+- name: Reboot node to enable fips
+  reboot:
+
+- name: Wait for the reboot to complete
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300

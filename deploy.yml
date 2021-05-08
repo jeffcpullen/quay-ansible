@@ -5,6 +5,9 @@
   gather_facts: true
   tasks:
 
+    - name: Enable FIPS
+      include_tasks: tasks/enable-fips.yml
+
     - name: Configure podman
       include_tasks: tasks/podman-setup.yml
 
