@@ -5,10 +5,8 @@
   gather_facts: true
   tasks:
 
-    - name: Install podman
-      package:
-        name: podman
-        state: latest
+    - name: Configure podman
+      include_tasks: tasks/podman-setup.yml
 
     - name: Configure firewall
       include_tasks: tasks/firewall-setup.yml
