@@ -1,51 +1,16 @@
 ---
 
-  - name: Create /var/lib/redis
-    file:
-      path: /var/lib/redis
-      state: directory
-      mode: '0777'
-    tags:
-      - quay
-      - quay-config
-      - quay-worker
-      - redis
-      - database
+- name: Start redis container
+  containers.podman.podman_container:
+    name: redis
+    image: registry.redhat.io/rhel8/redis-5:1
+    state: started
+    restart: yes
+    restart_policy: "always"
+    ports:
+        - "6379:6379"
+    env:
+        REDIS_PASSWORD: "strongpassword"
+    volume:
+      - "/opt/quay/postgres-quay:/var/lib/pgsql/data:Z"
 
-  - name: Deploy Redis container
-    docker_container:
-       detach: true
-       restart: true
-      name: "redis"
-       privileged: true
-      published_ports: 6379:6379
-      volumes: /var/lib/redis:/var/lib/redis/data:Z
-      image: "registry.redhat.io/rhscl/redis-5-rhel7"
-      env:
-        REDIS_PASSWORD: "{{ quay_redis_password }}"
-    tags:
-      - quay
-      - quay-config
-      - quay-worker
-      - redis
-      - database
-
-  - name: Install netcat if it isn't there already
-    yum:
-      name: nmap-ncat
-      state: latest
-    tags:
-      - quay
-      - quay-config
-      - quay-worker
-      - redis
-      - database
-
-  - name: Test if Redis is up and talking
-    shell: printf "PING\r\n" | nc localhost 6379
-    tags:
-      - quay
-      - quay-config
-      - quay-worker
-      - redis
-      - database
