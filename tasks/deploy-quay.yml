@@ -1,50 +1,53 @@
 ---
 
-  - name: Ensure that quay config is stopped
-    docker_container:
-      name: quay-config
-      state: stopped
-    ignore_errors: true
-    tags:
-      - quay
+- name: "Create quay config directory"
+  file:
+    state: directory
+    path: "/opt/quay/config"
+  tags:
+    - quay
 
-  - name: "Create quay config directory"
-    file:
-      state: directory
-      path: "{{ QUAY_ROOT_DIR }}/config"
-    tags:
-      - quay
+- name: "Create extra_ca_certs directory"
+  file:
+    state: directory
+    path: "/opt/quay/config/extra_ca_certs"
+  tags:
+    - quay
 
-  - name: "Create quay storage directory (when object storage is not available)"
-    file:
-      state: directory
-      path: "{{ QUAY_STORAGE_DIR }}"
-    when: not QUAY_OBJECT_STORAGE and QUAY_OBJECT_STORAGE is defined
-    tags:
-      - quay
+- name: "Create quay storage directory (when object storage is not available)"
+  file:
+    state: directory
+    path: "/opt/quay/storage"
+  tags:
+    - quay
 
-  - name: Copy the tarball to the quay host
-    unarchive:
-      src: "{{ QUAY_CONFIG_TAR }}"
-      dest: "{{ QUAY_ROOT_DIR }}/config/"
-      copy: true
-    tags:
-      - quay
-      - deploy-config
+- name: Copy quay template in place
+  template:
+    src: config.yaml.j2
+    dest: '/opt/quay/config/config.yaml'
 
-  - name: Start quay
-    docker_container:
-       detach: true
-       restart: true
-      name: "quay"
-       privileged: true
-      sysctls: { net.core.somaxconn: 4096 }
-      published_ports:
-        - "{{ QUAY_HTTP_PORT }}:8080"
-        - "{{ QUAY_HTTPS_PORT }}:8443"
-      image: "{{ QUAY_IMAGE_VERSION }}"
-      volumes:
-        - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
-        - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
-    tags:
-      - quay
+- name: Copy certs in place
+  copy:
+    src: '{{ item }}'
+    dest: '/opt/quay/config/{{ item }}'
+  with_items:
+    - 'ssl.cert'
+    - 'ssl.key'
+
+- name: Start quay
+  containers.podman.podman_container:
+    name: quay
+    image: registry.redhat.io/quay/quay-rhel8:v3.5.1
+    state: started
+    restart: yes
+    restart_policy: "always"
+    sysctl:
+      net.core.somaxconn: 4096
+    ports:
+        - "8080:8080"
+        - "443:8443"
+    volume:
+        - "/opt/quay/config:/conf/stack:Z"
+        - "/opt/quay/storage:/datastorage:Z"
+  tags:
+    - quay
