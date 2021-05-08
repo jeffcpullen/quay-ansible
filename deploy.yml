@@ -11,6 +11,22 @@
     - name: Configure firewall
       include_tasks: tasks/firewall-setup.yml
 
+    - name: Deploy postgres
+      include_tasks: tasks/deploy-postgresql.yml
+
+    - name: Deploy redis
+      include_tasks: tasks/deploy-redis.yml
+
+# This isn't really necessary if we already have the config.yaml
+#    - name: Start quay in config mode
+#      include_tasks: tasks/quay-config-mode.yml
+
+    - name: Start quay
+      include_tasks: tasks/deploy-quay.yml
+
+
+###########################################################################
+
 
 #- hosts: quaysystems
 #  become: true
