@@ -1,80 +1,33 @@
 ---
 
-  - name: Install postgres pre-reqs
-    yum:
-      name: python-psycopg2
-      state: latest
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-    tags:
-      - database
+- name: Create postgres dir
+  file:
+    path: '/opt/quay/postgres-quay'
+    state: directory
 
-  - name: Install postgres packages
-    yum:
-      name:
-        - "rh-{{ postgresql_version }}-postgresql-syspaths"
-        - "rh-{{ postgresql_version }}-postgresql-server-syspaths"
-        - "rh-{{ postgresql_version }}-postgresql-contrib-syspaths"
-        - "rh-{{ postgresql_version }}-postgresql-libs"
-      state: latest
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-    notify: restart postgres
-    tags:
-      - database
+- name: Set postgres dir ACL
+  ansible.posix.acl:
+    path: '/opt/quay/postgres-quay'
+    entry: u:26:-wx
+    state: present
 
-  - name: init postgres
-    command: "scl enable rh-{{ postgresql_version }} -- postgresql-setup --initdb"
-    args:
-      creates: "/var/opt/rh/rh-{{ postgresql_version }}/lib/pgsql/data/postgresql.conf"
-      
-  - name: Force all notified handlers to run at this point, not waiting for normal sync points
-    meta: flush_handlers
+- name: Start postgres container
+  containers.podman.podman_container:
+    name: postgresql-quay
+    image: registry.redhat.io/rhel8/postgresql-10:1
+    state: started
+    restart: yes
+    restart_policy: "always"
+    ports:
+        - "5432:5432"
+    env:
+        POSTGRESQL_USER: "quayuser"
+        POSTGRESQL_PASSWORD: "quaypass"
+        POSTGRESQL_DATABASE: "quay"
+        POSTGRESQL_ADMIN_PASSWORD: "adminpass"
+    volume:
+      - "/opt/quay/postgres-quay:/var/lib/pgsql/data:Z"
 
-  - name: Deploy customized pg_hba.conf file
-    template:
-      src: templates/pg_hba.conf.j2
-      dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-    notify: restart postgres
-    tags:
-      - database
-
-  - name: Set postgres listen address to all interfaces
-    lineinfile:
-      path: "/var/opt/rh/rh-{{ postgresql_version }}/lib/pgsql/data/postgresql.conf"
-      regexp: "listen_addresses = "
-      line: "listen_addresses = '*'"
-    when: QUAY_POSTGRESQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-    notify: restart postgres
-    tags:
-      - database
-
-  - name: Force all notified handlers to run at this point, not waiting for normal sync points
-    meta: flush_handlers
-
-  - name: Create a new database with name "acme"
-    postgresql_db:
-      name: "{{ postgresql_quay_db }}"
-      state: present
-
-  - name: "Connect to {{ postgresql_quay_db }} database, create {{ postgresql_quay_user }} user, and grant access to ALL"
-    postgresql_user:
-      db: "{{ postgresql_quay_db }}"
-      name: "{{ postgresql_quay_user }}"
-      password: "{{ postgresql_quay_user_password }}"
-      priv: "ALL"
-      expires: "infinity"
-
-# # This wont work, need to start postgres then link to it to run the command
-#   - name: Start Postgresql container
-#     docker_container:
-#        detach: true
-#       restart: no
-#       name: "postgres"
-#        privileged: false
-#       published_ports: "5432:5432"
-#       image: "postgres"
-#       command: 'echo "create database clairtest" | psql -h \
-#    "$POSTGRES_PORT_5432_TCP_ADDR" -p  \
-#    "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
-#     tags:
-#       - postgres
+- name: Enable pg_trgm
+  command: >
+    podman exec -it postgresql-quay /bin/bash -c 'echo "CREATE EXTENSION IF NOT EXISTS pg_trgm" | psql -d quay -U postgres'
