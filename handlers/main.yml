@@ -1,17 +1,2 @@
 ---
 # handlers file for quay-ansible
-
-- name: reload-firewall
-  command: firewall-cmd --reload
-
-- name: restart docker
-  systemd:
-    name: docker
-    state: restarted
-  ignore_errors: true
-
-- name: restart postgres
-  systemd:
-    name: "rh-{{ postgresql_version }}-postgresql.service"
-    state: restarted
-    enabled: true
