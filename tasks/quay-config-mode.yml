@@ -1,33 +1,12 @@
 ---
 
-  # Note: this does not use the container restart policy option
-  #       because config mode should only happen once
-  - name: Start quay in config mode
-    docker_container:
-       detach: true
-      restart: false
-      name: "quay-config"
-       privileged: true
-      published_ports: "{{ QUAY_CONFIG_PORT }}:8443"
-      image: "{{ QUAY_IMAGE_VERSION }}"
-      command: "config {{ QUAY_CONFIG_PASSWORD }}"
-    tags:
-      - quay-config
-
-  - name: "Go login to quay host on port {{ QUAY_CONFIG_PORT }}"
-    debug:
-      msg: "Login to {{ inventory_hostname }}:{{ QUAY_CONFIG_PORT }} using username quayconfig and password {{ QUAY_CONFIG_PASSWORD }}"
-    tags:
-      - quay-config
-
-  - name: "Setup configuration options in quay config"
-    debug:
-      msg: "1) Select mysql database option. 2) Fill out the fields with the following data. Database Server = {{ inventory_hostname }}, Username = {{ MYSQL_USER }}, Password = {{ MYSQL_PASSWORD }}, Database Name = {{ MYSQL_DATABASE }}, SSL certificate can be left blank for testing"
-    tags:
-      - quay-config
-
-  - name: "Final config settings"
-    debug:
-      msg: "At a minimum configure Server Hostname ({{ inventory_hostname }}) and Redis hostname ({{ inventory_hostname }}). Then click Save configuration changes and make sure that the configuration is validated. Download the configuration file and save it at <think of something here>"
-    tags:
-      - quay-config
+- name: Start quay in config mode
+  containers.podman.podman_container:
+    name: quay_config
+    image: registry.redhat.io/quay/quay-rhel8:v3.5.1
+    state: started
+    restart: false
+    restart_policy: "no"
+    ports:
+        - "8080:8080"
+    command: 'config secret'

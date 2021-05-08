@@ -11,6 +11,3 @@
         - "6379:6379"
     env:
         REDIS_PASSWORD: "strongpassword"
-    volume:
-      - "/opt/quay/postgres-quay:/var/lib/pgsql/data:Z"
-
