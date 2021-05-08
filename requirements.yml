@@ -15,4 +15,7 @@
 #- src: geerlingguy.mysql
 
 # Install mysql from galaxy
-- src: robertdebock.mysql
+#- src: robertdebock.mysql
+
+collections:
+  - name: ansible.posix
