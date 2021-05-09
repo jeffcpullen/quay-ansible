@@ -24,6 +24,7 @@
 
 - name: Enable FIPS
   include_tasks: tasks/enable-fips.yml
+  when: fips_enabled
 
 - name: Configure podman
   include_tasks: tasks/podman-setup.yml
