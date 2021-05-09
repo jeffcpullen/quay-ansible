@@ -2,12 +2,12 @@
 
 - name: Create postgres dir
   file:
-    path: '/opt/quay/postgres-quay'
+    path: '{{ QUAY_ROOT_DIR }}/postgres-quay'
     state: directory
 
 - name: Set postgres dir ACL
   ansible.posix.acl:
-    path: '/opt/quay/postgres-quay'
+    path: '{{ QUAY_ROOT_DIR }}/postgres-quay'
     entry: u:26:-wx
     state: present
 
@@ -26,7 +26,7 @@
         POSTGRESQL_DATABASE: "quay"
         POSTGRESQL_ADMIN_PASSWORD: "adminpass"
     volume:
-      - "/opt/quay/postgres-quay:/var/lib/pgsql/data:Z"
+      - "{{ QUAY_ROOT_DIR }}/postgres-quay:/var/lib/pgsql/data:Z"
 
 - name: Wait for postgres to start
   ansible.builtin.pause:
