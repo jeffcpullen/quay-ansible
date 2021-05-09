@@ -1,6 +1,27 @@
 ---
 # tasks file for quay-ansible
 
+- name: "Create quay config directory"
+  file:
+    state: directory
+    path: "{{ QUAY_ROOT_DIR }}/config"
+  tags:
+    - quay
+
+- name: "Create extra_ca_certs directory"
+  file:
+    state: directory
+    path: "{{ QUAY_ROOT_DIR }}/config/extra_ca_certs"
+  tags:
+    - quay
+
+- name: "Create quay storage directory (when object storage is not available)"
+  file:
+    state: directory
+    path: "{{ QUAY_ROOT_DIR }}/storage"
+  tags:
+    - quay
+
 - name: Enable FIPS
   include_tasks: tasks/enable-fips.yml
 
@@ -20,9 +41,11 @@
 #- name: Start quay in config mode
 #  include_tasks: tasks/quay-config-mode.yml
 
+- name: Deploy Certificates
+  include_tasks: tasks/create-certificate.yml
+
 - name: Start quay
   include_tasks: tasks/deploy-quay.yml
-
 
 ###########################################################################
 # TODO: Implement these at a later time

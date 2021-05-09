@@ -1,38 +1,9 @@
 ---
 
-- name: "Create quay config directory"
-  file:
-    state: directory
-    path: "/opt/quay/config"
-  tags:
-    - quay
-
-- name: "Create extra_ca_certs directory"
-  file:
-    state: directory
-    path: "/opt/quay/config/extra_ca_certs"
-  tags:
-    - quay
-
-- name: "Create quay storage directory (when object storage is not available)"
-  file:
-    state: directory
-    path: "/opt/quay/storage"
-  tags:
-    - quay
-
 - name: Copy quay template in place
   template:
     src: config.yaml.j2
-    dest: '/opt/quay/config/config.yaml'
-
-- name: Copy certs in place
-  copy:
-    src: '{{ item }}'
-    dest: '/opt/quay/config/{{ item }}'
-  with_items:
-    - 'ssl.cert'
-    - 'ssl.key'
+    dest: '{{ QUAY_ROOT_DIR }}/config/config.yaml'
 
 - name: Start quay
   containers.podman.podman_container:
@@ -47,7 +18,7 @@
         - "8080:8080"
         - "443:8443"
     volume:
-        - "/opt/quay/config:/conf/stack:Z"
-        - "/opt/quay/storage:/datastorage:Z"
+        - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
+        - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
   tags:
     - quay

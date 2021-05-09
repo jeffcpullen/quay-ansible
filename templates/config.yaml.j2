@@ -3,7 +3,7 @@ AVATAR_KIND: local
 BITTORRENT_FILENAME_PEPPER: 13b511a8-443e-4927-b5ef-affd63e4d752
 BUILDLOGS_REDIS:
     host: '{{ redis_hostname }}'
-    password: '{{ redis_password }} '
+    password: '{{ redis_password }}'
     port: '{{ redis_port }}'
 DATABASE_SECRET_KEY: c67e501c-0119-4dc4-b47d-7db3efd38d86
 DB_CONNECTION_ARGS:
@@ -89,8 +89,9 @@ TEAM_RESYNC_STALE_TIME: 30m
 TESTING: false
 USE_CDN: false
 USER_EVENTS_REDIS:
-    host: {{ redis_hostname }}
-    password: {{ redis_password }}
-    port: {{ redis_port }}
+    host: '{{ redis_hostname }}'
+    password: '{{ redis_password }}'
+    port: '{{ redis_port }}'
 USER_RECOVERY_TOKEN_LIFETIME: 30m
 USERFILES_LOCATION: default
+SSL_PROTOCOLS : ['TLSv1.1','TLSv1.2']
