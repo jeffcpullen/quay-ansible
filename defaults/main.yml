@@ -1,39 +1,24 @@
 ---
 # defaults file for quay-ansible
 
+quay_hostname: 'quay.dan.redhatgov.io'
+quay_san: ''
+redis_hostname: 'redis.dns.podman'
+redis_password: 'strongpassword'
+redis_port: 6379
+
+postgresql_user: 'quayuser'
+postgresql_password: 'quaypass'
+postgresql_hostname: 'postgresql-quay.dns.podman'
+postgresql_db: 'quay'
+postgresql_port: 5432
+
+
 # @var docker_login_quay: "undefined" # This optional value is pulled from the Red Hat solution to access quay images and the value is the entire login command such as: docker login -u='REDHAT_QUAY_USER' -p='LONG_UUID_STRING' quay.io"
 # docker_login_quay:
 
 # @var docker_login_redhat: "docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}' https://registry.redhat.io" # Command to access the Red Hat registry, built with UPSTREAM_REGISTRY_USERNAME and UPSTREAM_REGISTRY_PASSWORD variables
 docker_login_redhat: docker login -u='{{ UPSTREAM_REGISTRY_USERNAME}}' -p='{{ UPSTREAM_REGISTRY_PASSWORD }}
-
-### Generic Database ###
-# @todo containerized database testing
-# @var QUAY_DATABASE_CONTAINERIZE: false # Boolean if databases should be deployed as RPMs or Containers
-QUAY_DATABASE_CONTAINERIZE: false
-
-### MySQL ###
-# @var QUAY_MYSQL_DEPLOY: true # Boolean on if mysql should be deployed for Quay
-QUAY_MYSQL_DEPLOY: true
-
-# @var MYSQL_DATABASE: "enterpriseregistrydb" # The database name to be created / used for quay
-MYSQL_DATABASE: enterpriseregistrydb
-
-# @var MYSQL_PASSWORD: "changeme" # The mysql database password to be set/used
-MYSQL_PASSWORD: changeme
-
-# @var MYSQL_ROOT_PASSWORD: "changeme" # The mysql root password
-MYSQL_ROOT_PASSWORD: changeme
-
-# @var MYSQL_USER: "quayuser" # The mysql database user
-MYSQL_USER: quayuser
-
-### Postgres ###
-# @var QUAY_POSTGRESQL_DEPLOY: true # Boolean on if Postgresql should be deployed for Clair / Quay
-QUAY_POSTGRESQL_DEPLOY: true
-
-# @var POSTGRES_PORT_5432_TCP_PORT: 5432 # Port to access postgres on
-POSTGRES_PORT_5432_TCP_PORT: 5432
 
 # @todo this is actually being used for clair, need to test using clair and quay on postgres
 # @var postgresql_quay_db: clair  # The postgres clair database
@@ -44,13 +29,6 @@ postgresql_quay_user: quay
 
 # @var postgresql_quay_user_password: changeme # The postgres quay user password
 postgresql_quay_user_password: changeme
-
-# @var postgresql_user: postgres # The postgres admin user
-postgresql_user: postgres
-
-### Quay ###
-# @var QUAY_ENDPOINT: "quay-server.example.com" # The FQDN for your quay system
-QUAY_ENDPOINT: quay-server.example.com
 
 # @var QUAY_CONFIG_PASSWORD: 'changeme' # The password for the quay config UI
 QUAY_CONFIG_PASSWORD: changeme
@@ -90,9 +68,6 @@ CLAIR_ENCRYPT: true
 ### Redis ###
 # @var QUAY_REDIS_DEPLOY: 'true' # Boolean to decide if Redis should be deployed
 QUAY_REDIS_DEPLOY: true
-
-# @var quay_redis_password: 'lkajsdlfkjwoeiruewoijdlkf' # The password to set on deployed Redis
-quay_redis_password: lkajsdlfkjwoeiruewoijdlkf
 
 # @var QUAY_REDIS_CONTAINERIZE: 'true' # If deployed Redis should be containerized
 QUAY_REDIS_CONTAINERIZE: true
