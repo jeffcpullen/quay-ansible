@@ -1,175 +1,38 @@
 ---
 # tasks file for quay-ansible
 
-- name: Deploy docker to database container host
-  include_tasks: tasks/deploy-docker.yml
-  vars:
-    docker_packages:
-      - docker
-      - python-docker-py
-      - MySQL-python
-  when: QUAY_DATABASE_CONTAINERIZE and QUAY_MYSQL_DEPLOY
-  tags:
-    - database
+- name: Enable FIPS
+  include_tasks: tasks/enable-fips.yml
 
-- name: Deploy MySQL python dependencies
-  yum:
-    name: MySQL-python
-    state: latest
-  when: not QUAY_DATABASE_CONTAINERIZE and QUAY_MYSQL_DEPLOY
-  tags:
-    - database
-
-- name: Configure firewall for MySQL
-  include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - 3306/tcp
-    firewall_zone: public
-    when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-  tags:
-    - database
-
-- name: Configure firewall for MySQL as a container
-  include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - 3306/tcp
-    firewall_zone: trusted
-    when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
-  tags:
-    - database
-
-- name: Login to quay.io
-  docker_login:
-    username: "{{ QUAY_IO_USERNAME }}"
-    password: "{{ QUAY_IO_PASSWORD }}"
-    registry: "{{ QUAY_IO_REGISTRY_URL }}"
-  when: QUAY_IO_USERNAME is defined
-
-- name: Login to Red Hat Registry
-  docker_login:
-    username: "{{ UPSTREAM_REGISTRY_USERNAME }}"
-    password: "{{ UPSTREAM_REGISTRY_PASSWORD }}"
-    registry: "{{ UPSTREAM_REGISTRY_URL }}"
-  when: UPSTREAM_REGISTRY_USERNAME is defined
-
-- name: Deploy conatinerized mysql
-  include_tasks: tasks/deploy-mysql.yml
-  when: QUAY_MYSQL_DEPLOY and QUAY_DATABASE_CONTAINERIZE
-  tags:
-    - database
-
-- name: Deploy mysql
-  include_role:
-    name: robertdebock.mysql
-  vars:
-    _mysql_service: "{{ _quay_mysql_service }}"
-    _mysql_packages: "{{ _quay_mysql_packages }}"
-  when: QUAY_MYSQL_DEPLOY and not QUAY_DATABASE_CONTAINERIZE
-  tags:
-    - database
-
-- name: Configure firewall for PostgreSQL
-  include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - "{{ POSTGRES_PORT_5432_TCP_PORT }}/tcp"
-    firewall_zone: trusted
-    when: QUAY_POSTGRESQL_DEPLOY
-  tags:
-    - database
-
-- name: Deploy PostgreSQL
-  include_tasks: tasks/deploy-postgresql.yml
-  when: QUAY_POSTGRESQL_DEPLOY
-  tags:
-    - database
-
-- name: Test mysql
-  include_tasks: tasks/mysql-test.yml
-  when: QUAY_MYSQL_DEPLOY
-  tags:
-    - database
-
-- name: Deploy docker to redis container host
-  include_tasks: tasks/deploy-docker.yml
-  vars:
-    docker_packages:
-      - docker
-      - python-docker-py
-  when: QUAY_REDIS_CONTAINERIZE
-  tags:
-    - redis
-
-- name: Configure firewall for Redis
-  include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - 6379/tcp
-    firewall_zone: public
-    when: QUAY_REDIS_DEPLOY and not QUAY_REDIS_CONTAINERIZE
-    tags:
-      - redis
-
-- name: Configure firewall for Redis container
-  include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - 6379/tcp
-    firewall_zone: trusted
-    when: QUAY_REDIS_DEPLOY and QUAY_REDIS_CONTAINERIZE
-    tags:
-      - redis
-
-- name: Deploy redis container
-  include_tasks: tasks/deploy-redis.yml
-  when: QUAY_REDIS_CONTAINERIZE
-  tags:
-    - redis
-
-- name: Deploy docker to quay container host
-  include_tasks: tasks/deploy-docker.yml
-  vars:
-    docker_packages:
-      - docker
-      - python-docker-py
-  tags:
-    - quay
-    - quay-config
-    - quay-worker
+- name: Configure podman
+  include_tasks: tasks/podman-setup.yml
 
 - name: Configure firewall
   include_tasks: tasks/firewall-setup.yml
-  vars:
-    ports:
-      - 443/tcp
-      - 80/tcp
-      - 8443/tcp
-    firewall_zone: public
-  tags:
-    - quay
-    - quay-config
-    - quay-worker
 
-- name: Deploy quay config container
-  include_tasks: tasks/quay-config-mode.yml
-  when: QUAY_CONFIG is defined and QUAY_CONFIG
-  tags:
-    - quay-config
+- name: Deploy postgres
+  include_tasks: tasks/deploy-postgresql.yml
 
-- name: Deploy quay container
+- name: Deploy redis
+  include_tasks: tasks/deploy-redis.yml
+
+# This isn't really necessary if we already have the config.yaml
+#- name: Start quay in config mode
+#  include_tasks: tasks/quay-config-mode.yml
+
+- name: Start quay
   include_tasks: tasks/deploy-quay.yml
-  when: QUAY_CONFIG is undefined or not QUAY_CONFIG
-  tags:
-    - quay
 
-- name: Deploy quay mirror sync container
-  include_tasks: tasks/quay-mirror.yml
-  tags:
-    - quay-worker
 
-- name: Deploy clair
-  include_tasks: tasks/quay-clair.yml
-  tags:
-    - quay-clair
+###########################################################################
+# TODO: Implement these at a later time
+#
+#  - name: Deploy quay mirror sync container
+#    include_tasks: tasks/quay-mirror.yml
+#    tags:
+#      - quay-worker
+#
+#  - name: Deploy clair
+#    include_tasks: tasks/quay-clair.yml
+#    tags:
+#      - quay-clair
