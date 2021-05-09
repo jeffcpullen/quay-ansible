@@ -4,3 +4,13 @@
 # @var POSTGRES_CONNECTION_STRING: "host={{ QUAY_ENDPOINT }} sslmode=disable dbname={{ postgresql_quay_db }} user={{ postgresql_quay_user }} password={{ postgresql_quay_user_password }} statement_timeout=60000" # The connection string built with other variables
 POSTGRES_CONNECTION_STRING: "host={{ QUAY_ENDPOINT }} sslmode=disable dbname={{ postgresql_quay_db }} user={{ postgresql_quay_user }} password={{ postgresql_quay_user_password }} statement_timeout=60000"
 
+
+
+
+#######
+# CSR/Cert Vars
+key_name: 'ssl.key'
+csr_name: 'ssl.csr'
+crt_name: 'ssl.cert'
+key_size: 4096
+key_type: 'RSA'

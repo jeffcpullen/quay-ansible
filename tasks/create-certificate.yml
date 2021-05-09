@@ -1,0 +1,100 @@
+---
+- name: Generate an OpenSSL private key
+  community.crypto.openssl_privatekey:
+    path: "{{ QUAY_ROOT_DIR }}/config/{{ key_name }}"
+    size: '{{ key_size }}'
+    type: '{{ key_type }}'
+    mode: 0640
+  tags:
+    - certificate
+
+- name: Combine the IP and configured SAN
+  set_fact:
+    quay_san: "IP:{{ lookup('community.general.dig', '{{ quay_hostname }}.')}},DNS:{{ quay_hostname }},{{ quay_san }}"
+  when: quay_san != ""
+
+- name: Generate IP SAN
+  set_fact:
+    quay_san: "IP:{{ lookup('community.general.dig', '{{ quay_hostname }}.')}},DNS:{{ quay_hostname }}"
+  when: quay_san == ""
+
+- name: Generate an OpenSSL CSR
+  community.crypto.openssl_csr:
+    path: "{{ QUAY_ROOT_DIR }}/config/{{ csr_name }}"
+    country_name: 'US'
+    state_or_province_name: 'Virginia'
+    locality_name: 'Chantilly'
+    organization_name: 'RedHat'
+    organizational_unit_name: 'RedHat'
+    privatekey_path: "{{ QUAY_ROOT_DIR }}/config/{{ key_name }}"
+    common_name: "{{ quay_hostname }}"
+    subject_alt_name: '{{ quay_san }}'
+    subject_alt_name_critical: true
+    use_common_name_for_san: true
+    basic_constraints_critical: true
+    basicConstraints: ['CA:TRUE']
+    state: present
+    mode: 0640
+  tags:
+    - certificate
+
+- name: Generate a Self Signed OpenSSL Certificate
+  community.crypto.x509_certificate:
+    path: "{{ QUAY_ROOT_DIR }}/config/{{ crt_name }}"
+    privatekey_path: "{{ QUAY_ROOT_DIR }}/config/{{ key_name }}"
+    csr_path: "{{ QUAY_ROOT_DIR }}/config/{{ csr_name }}"
+    provider: selfsigned
+    selfsigned_version: 3
+    mode: 0644
+  tags:
+    - certificate
+
+- name: Remove existing certificate copies
+  file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - '/etc/pki/ca-trust/source/anchors/{{ crt_name }}'
+    - '/etc/pki/tls/private/{{ key_name }}'
+    
+# Make sure to trust the self signed cert we just made
+- name: Copy self signed cert to registry's PKI trust
+  become: true
+  copy:
+    src: "{{ QUAY_ROOT_DIR }}/config/{{ crt_name }}"
+    dest: '/etc/pki/ca-trust/source/anchors/'
+    remote_src: true
+  tags:
+    - certificate
+
+- name: Copy private key to registry's host tls directory
+  become: true
+  copy:
+    src: "{{ QUAY_ROOT_DIR }}/config/{{ key_name }}"
+    dest: '/etc/pki/tls/private/{{ key_name }}'
+    owner: root
+    group: root
+    mode: '0660'
+    remote_src: true
+  tags:
+    - certificate
+
+- name: update registry trusted ca
+  become: true
+  command: update-ca-trust
+  when:
+    (ansible_distribution == "RedHat") or
+    (ansible_distribution == "CentOS") or
+    (ansible_distribution == "Fedora")
+  tags:
+    - certificate
+
+- name: update registry trusted ca extract
+  become: true
+  command: update-ca-trust extract
+  when:
+    (ansible_distribution == "RedHat") or
+    (ansible_distribution == "CentOS") or
+    (ansible_distribution == "Fedora")
+  tags:
+    - certificate
