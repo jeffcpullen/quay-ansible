@@ -4,7 +4,7 @@ BITTORRENT_FILENAME_PEPPER: 13b511a8-443e-4927-b5ef-affd63e4d752
 BUILDLOGS_REDIS:
     host: '{{ redis_hostname }}'
     password: '{{ redis_password }}'
-    port: '{{ redis_port }}'
+    port: {{ redis_port }}
 DATABASE_SECRET_KEY: c67e501c-0119-4dc4-b47d-7db3efd38d86
 DB_CONNECTION_ARGS:
     autorollback: true
@@ -20,7 +20,7 @@ DISTRIBUTED_STORAGE_PREFERENCE:
     - default
 FEATURE_ACI_CONVERSION: false
 FEATURE_ACTION_LOG_ROTATION: false
-FEATURE_ANONYMOUS_ACCESS: false
+FEATURE_ANONYMOUS_ACCESS: true
 FEATURE_APP_REGISTRY: false
 FEATURE_APP_SPECIFIC_TOKENS: true
 FEATURE_BITBUCKET_BUILD: false
