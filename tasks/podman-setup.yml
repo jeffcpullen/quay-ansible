@@ -8,6 +8,7 @@
 - name: Install CNI DNS dependencies
   ansible.builtin.package:
     name:
+      - jq
       - git
       - make
       - golang
