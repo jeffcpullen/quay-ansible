@@ -9,6 +9,7 @@
         low_severity: false
         medium_severity: false
         unknown_severity: false
+        enable_fips_mode: {{ fips_enabled }}
 
   tasks:
 
