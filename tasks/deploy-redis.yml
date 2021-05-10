@@ -10,7 +10,7 @@
     ports:
         - "6379:6379"
     env:
-        REDIS_PASSWORD: "strongpassword"
+        REDIS_PASSWORD: "{{ redis_password }}"
 
 - name: Create redis systemd service file
   command: >
