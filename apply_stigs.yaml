@@ -1,0 +1,11 @@
+---
+- hosts: quay
+  become: true
+  gather_facts: true
+  roles:
+    - role: redhatofficial.rhel8_stig
+      vars:
+        high_severity: true
+        low_severity: false
+        medium_severity: false
+        unknown_severity: false
