@@ -35,3 +35,30 @@
 - name: Enable pg_trgm
   command: >
     podman exec -it postgresql-quay /bin/bash -c 'echo "CREATE EXTENSION IF NOT EXISTS pg_trgm" | psql -d quay -U postgres'
+
+- name: Create postgresql-quay systemd service file
+  command: podman generate systemd -n -f postgresql-quay
+  args:
+    chdir: '/tmp/'
+
+- name: Write postgresql-quay systemd unit file
+  copy:
+    src: '/tmp/container-postgresql-quay.service'
+    dest: '/usr/lib/systemd/system/container-postgresql-quay.service'
+    remote_src: true
+
+- name: Remove temp unit file
+  file:
+    path: '/tmp/container-postgresql-quay.service'
+    state: absent
+
+- name: Start postgresql-quay after redis container service
+  community.general.ini_file:
+    path: /usr/lib/systemd/system/container-postgresql-quay.service
+    section: Unit
+    option: After
+    value: 'network-online.target,container-redis.service'
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes

@@ -11,3 +11,24 @@
         - "6379:6379"
     env:
         REDIS_PASSWORD: "strongpassword"
+
+- name: Create redis systemd service file
+  command: >
+    podman generate systemd -n redis
+  args:
+    chdir: '/tmp/'
+
+- name: Write postgresql-quay systemd unit file
+  copy:
+    src: '/tmp/container-redis.service'
+    dest: '/usr/lib/systemd/system/container-redis.service'
+    remote_src: true
+
+- name: Remove temp unit file
+  file:
+    path: '/tmp/container-redis.service'
+    state: absent
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes

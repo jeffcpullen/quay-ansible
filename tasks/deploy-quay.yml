@@ -22,3 +22,31 @@
         - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
   tags:
     - quay
+
+- name: Create quay systemd service file
+  command: >
+    podman generate systemd -n quay
+  args:
+    chdir: '/tmp/'
+
+- name: Write postgresql-quay systemd unit file
+  copy:
+    src: '/tmp/container-quay.service'
+    dest: '/usr/lib/systemd/system/container-quay.service'
+    remote_src: true
+
+- name: Remove temp unit file
+  file:
+    path: '/tmp/container-quay.service'
+    state: absent
+
+- name: Start quay after the postgresql-quay container service
+  community.general.ini_file:
+    path: /usr/lib/systemd/system/container-quay.service
+    section: Unit
+    option: After
+    value: 'network-online.target,container-postgresql-quay.service'
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
