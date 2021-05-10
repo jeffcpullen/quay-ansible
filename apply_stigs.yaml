@@ -9,3 +9,15 @@
         low_severity: false
         medium_severity: false
         unknown_severity: false
+
+  tasks:
+
+    - name: Reboot node to enable fips
+      reboot:
+
+    - name: Wait for the reboot to complete
+      wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 300
