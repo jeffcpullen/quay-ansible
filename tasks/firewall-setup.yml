@@ -30,8 +30,8 @@
       permanent: true
       state: enabled
     with_items:
-      - '8443/tcp'
-      - '8080/tcp'
+      #- '8443/tcp'
+      #- '8080/tcp'
       - '443/tcp'
     tags:
       - quay
