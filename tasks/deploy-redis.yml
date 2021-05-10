@@ -14,11 +14,11 @@
 
 - name: Create redis systemd service file
   command: >
-    podman generate systemd -n redis
+    podman generate systemd -n -f redis
   args:
     chdir: '/tmp/'
 
-- name: Write postgresql-quay systemd unit file
+- name: Write reids systemd unit file
   copy:
     src: '/tmp/container-redis.service'
     dest: '/usr/lib/systemd/system/container-redis.service'

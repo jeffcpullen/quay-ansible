@@ -25,11 +25,11 @@
 
 - name: Create quay systemd service file
   command: >
-    podman generate systemd -n quay
+    podman generate systemd -n -f quay
   args:
     chdir: '/tmp/'
 
-- name: Write postgresql-quay systemd unit file
+- name: Write quay systemd unit file
   copy:
     src: '/tmp/container-quay.service'
     dest: '/usr/lib/systemd/system/container-quay.service'
