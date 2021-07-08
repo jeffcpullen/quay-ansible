@@ -2,10 +2,10 @@
   
   - name: Start quay repository mirror worker
     docker_container:
-      detach: yes
-      restart: yes
+       detach: true
+       restart: true
       name: "mirroring-worker"
-      privileged: no
+       privileged: false
       image: "{{ QUAY_IMAGE_VERSION }}"
       volumes:
         - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"

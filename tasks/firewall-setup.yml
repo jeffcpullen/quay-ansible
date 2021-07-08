@@ -1,11 +1,9 @@
 ---
 
   - name: Ensure firewalld is installed
-    yum:
+    package:
       name: firewalld
       state: latest
-    notify:
-      - restart docker
     tags:
       - quay
       - quay-config
@@ -17,25 +15,7 @@
     systemd:
       name: firewalld
       state: started
-      enabled: yes
-    notify:
-      - restart docker
-    tags:
-      - quay
-      - quay-config
-      - quay-worker
-      - redis
-      - database
-
-  - name: Add docker0 interface to trusted zone
-    firewalld:
-      zone: trusted
-      interface: docker0
-      permanent: yes
-      state: enabled
-    notify:
-      - reload-firewall
-      - restart docker
+      enabled: true
     tags:
       - quay
       - quay-config
@@ -44,21 +24,18 @@
       - database
 
   - name: Enable firewalld ports
-    firewalld:
+    ansible.posix.firewalld:
       port: "{{ item }}"
-      zone: "{{ firewall_zone }}"
-      permanent: yes
+      zone: "public"
+      permanent: true
       state: enabled
-    with_items: "{{ ports }}"
-    notify:
-      - reload-firewall
-      - restart docker
+    with_items:
+      #- '8443/tcp'
+      #- '8080/tcp'
+      - '443/tcp'
     tags:
       - quay
       - quay-config
       - quay-worker
       - redis
       - database
-
-  - name: Force all notified handlers to run at this point, not waiting for normal sync points
-    meta: flush_handlers

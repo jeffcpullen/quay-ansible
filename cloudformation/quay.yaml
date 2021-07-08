@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Create Quay single node cluster
+
+Parameters:
+
+#  VpcCidr:
+#    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-4]))$
+#    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-24.
+#    Default: 10.0.0.0/16
+#    Description: CIDR block for VPC.
+#    Type: String
+
+  VpcId:
+    Description: The VPC-scoped resources will belong to this VPC.
+    Type: AWS::EC2::VPC::Id
+
+  HostedZoneId:
+    Description: The Route53 public zone ID to register the targets with, such as Z21IXYZABCZ2A4.
+    Type: String
+
+  HostedZoneName:
+    Description: The Route53 zone to register the targets with, such as example.com. Omit the trailing period.
+    Type: String
+    Default: "example.com"
+
+  QuayAdminPassword:
+    Description: Ansible Quay admin password.
+    Type: String
+    Default: "redhat2020"
+
+  DatabaseAdminPassword:
+    Description: Database Admin Password. No special characters.
+    Type: String
+    Default: "redhat2020"
+
+  PublicSubnet:
+    Description: The internet-facing subnet.
+    Type: AWS::EC2::Subnet::Id
+
+  InstanceType:
+    Default: t2.large
+    Description: Instance type of the EC2 Instance
+    Type: String
+
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access
+    Type: AWS::EC2::KeyPair::KeyName
+
+  RootVolumeSize:
+    Default: '50'
+    Description: Volume Size of the Root EBS
+    Type: Number
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      "HVM64": "ami-0ff8a91507f77f867"
+    us-east-2:
+      "HVM64": "ami-09e9df78649f443c0"
+    us-west-1:
+      "HVM64": "ami-0bdb828fd58c52235"
+    eu-west-1:
+      "HVM64": "ami-047bb4163c506cd98"
+
+Resources:
+
+  QuayIPAddress:
+    Type: AWS::EC2::EIP
+
+  QuayIPAssoc:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref 'QuayInstance'
+      EIP: !Ref 'QuayIPAddress'
+
+  QuaySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Quay Cluster Security Group
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        ToPort: 443
+        FromPort: 443
+        CidrIp: 0.0.0.0/0
+      VpcId: !Ref VpcId
+
+  QuayInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: "true"
+        DeviceIndex: "0"
+        GroupSet:
+        - !Ref "QuaySecurityGroup"
+        SubnetId: !Ref "PublicSubnet"
+      UserData:
+        Fn::Base64: !Sub
+          - |
+            #!/bin/bash -xe
+            pushd /root
+
+          - admin_password: !Ref 'QuayAdminPassword'
+
+  QuayDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref 'HostedZoneId'
+      Comment: Quay Instance.
+      Name: !Join [ '', [ "quay.", !Ref 'HostedZoneName' ] ]
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+      - !Ref QuayIPAddress
+
+Outputs:
+  QuayInstanceId:
+    Description: Quay Instance ID.
+    Value: !Ref QuayInstance
+
+  BootstrapPublicIp:
+    Description: The quay node public IP address.
+    Value: !GetAtt QuayInstance.PublicIp
+
+  BootstrapPrivateIp:
+    Description: The quay node private IP address.
+    Value: !GetAtt QuayInstance.PrivateIp
+
+  QuayIPAddress:
+    Description: IP address of the newly created Quay Instance
+    Value: !Ref 'QuayIPAddress'
+

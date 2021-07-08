@@ -1,3 +1,4 @@
+---
 docker_images:
   - src_registry: registry.redhat.io
     trgt_registry: "{{ QUAY_ENDPOINT }}"

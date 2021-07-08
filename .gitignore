@@ -4,3 +4,6 @@ roles/robertdebock.mysql*
 hosts
 group_vars/all
 *.vault
+*.swp
+inventory
+ansible.log

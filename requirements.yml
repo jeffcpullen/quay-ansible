@@ -1,3 +1,4 @@
+---
 # # Install postgresql from galaxy
 # - src: geerlingguy.postgresql
 #
@@ -14,4 +15,9 @@
 #- src: geerlingguy.mysql
 
 # Install mysql from galaxy
-- src: robertdebock.mysql
+#- src: robertdebock.mysql
+
+collections:
+  - name: ansible.posix
+  - name: community.crypto
+  - name: community.general

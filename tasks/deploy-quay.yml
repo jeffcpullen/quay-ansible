@@ -1,50 +1,52 @@
 ---
 
-  - name: Ensure that quay config is stopped
-    docker_container:
-      name: quay-config
-      state: stopped
-    ignore_errors: true
-    tags:
-      - quay
+- name: Copy quay template in place
+  template:
+    src: config.yaml.j2
+    dest: '{{ QUAY_ROOT_DIR }}/config/config.yaml'
 
-  - name: "Create quay config directory"
-    file:
-      state: directory
-      path: "{{ QUAY_ROOT_DIR }}/config"
-    tags:
-      - quay
-
-  - name: "Create quay storage directory (when object storage is not available)"
-    file:
-      state: directory
-      path: "{{ QUAY_STORAGE_DIR }}"
-    when: not QUAY_OBJECT_STORAGE and QUAY_OBJECT_STORAGE is defined
-    tags:
-      - quay
-
-  - name: Copy the tarball to the quay host
-    unarchive:
-      src: "{{ QUAY_CONFIG_TAR }}"
-      dest: "{{ QUAY_ROOT_DIR }}/config/"
-      copy: yes
-    tags:
-      - quay
-      - deploy-config
-
-  - name: Start quay
-    docker_container:
-      detach: yes
-      restart: yes
-      name: "quay"
-      privileged: yes
-      sysctls: { net.core.somaxconn: 4096 }
-      published_ports:
-        - "{{ QUAY_HTTP_PORT }}:8080"
-        - "{{ QUAY_HTTPS_PORT }}:8443"
-      image: "{{ QUAY_IMAGE_VERSION }}"
-      volumes:
+- name: Start quay
+  containers.podman.podman_container:
+    name: quay
+    image: registry.redhat.io/quay/quay-rhel8:v3.5.1
+    state: started
+    restart: yes
+    restart_policy: "always"
+    sysctl:
+      net.core.somaxconn: 4096
+    ports:
+        - "8080:8080"
+        - "443:8443"
+    volume:
         - "{{ QUAY_ROOT_DIR }}/config:/conf/stack:Z"
         - "{{ QUAY_ROOT_DIR }}/storage:/datastorage:Z"
-    tags:
-      - quay
+  tags:
+    - quay
+
+- name: Create quay systemd service file
+  command: >
+    podman generate systemd -n -f quay
+  args:
+    chdir: '/tmp/'
+
+- name: Write quay systemd unit file
+  copy:
+    src: '/tmp/container-quay.service'
+    dest: '/usr/lib/systemd/system/container-quay.service'
+    remote_src: true
+
+- name: Remove temp unit file
+  file:
+    path: '/tmp/container-quay.service'
+    state: absent
+
+- name: Start quay after the postgresql-quay container service
+  community.general.ini_file:
+    path: /usr/lib/systemd/system/container-quay.service
+    section: Unit
+    option: After
+    value: 'network-online.target,container-postgresql-quay.service'
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes

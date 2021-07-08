@@ -10,23 +10,17 @@ Requirements
 
 Before running:
 
-1) You'll need to pull down the roles that this playbook depends on. You may need to define an HTTP proxy for some environments.
+1) Install required ansible collections
 
  ```
- ansible-galaxy install --roles-path ./roles/ -r requirements.yml
+ ansible-galaxy collection install -r requirements.yml
  ```
 
-2) Get the quay shared secret from https://access.redhat.com/solutions/3533201.
+2) Install required ansible roles
 
-     If Docker is already installed on the quay host run the docker login string provided in that solution
-
-     If Docker isn't installed yet you can add the config.json to the system in advance of Docker (which will be installed as part of this playbook)
-
-     ```
-     mkdir -p ~/.docker
-     vi ~/.docker/config.json
-     <paste in solution config.json>
-     ```
+ ```
+ ansible-galaxy install -r requirements.yml
+ ```
 
 3) Requires Ansible 2.7+ on the host executing these playbooks
 
